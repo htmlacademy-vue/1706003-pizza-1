@@ -5,13 +5,13 @@
         <h1 class="title title--big">Конструктор пиццы</h1>
         <BuilderDoughSelector
           :doughArray="doughArray"
-          :curentDough="this.pizza.dough"
+          :curentDough="pizza.dough"
           @changeDought="changeDought"
         />
 
         <BuilderSizeSelector
           :sizesArray="sizesArray"
-          :curentSize="this.pizza.size"
+          :curentSize="pizza.size"
           @changeSize="changeSize"
         />
 
@@ -44,12 +44,7 @@
           />
 
           <BuilderPriceCounter
-            :elementsWithPrice="[
-              pizza.sauce,
-              pizza.dough,
-              ...pizza.ingredients,
-            ]"
-            :multiplier="pizza.size.multiplier"
+            :price="finalPrice"
             :disabled="disabledGetPrice"
             @getPrice="getPrice"
           />
@@ -65,6 +60,8 @@ import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelecto
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
+
+import { has } from "lodash";
 
 export default {
   name: "IndexHome",
@@ -147,6 +144,23 @@ export default {
         !this.pizza.name ||
         !this.pizza.ingredients.filter((ingredient) => ingredient.total).length
       );
+    },
+    standartPrice() {
+      const elementsWithPrice = [
+        this.pizza.sauce,
+        this.pizza.dough,
+        ...this.pizza.ingredients,
+      ];
+      return elementsWithPrice.reduce(
+        (totalPrice, element) =>
+          has(element, "total")
+            ? element.total * element.price + totalPrice
+            : element.price + totalPrice,
+        0
+      );
+    },
+    finalPrice() {
+      return this.standartPrice * this.pizza.size.multiplier;
     },
   },
 };

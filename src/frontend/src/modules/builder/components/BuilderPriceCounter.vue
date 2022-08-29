@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ formattedFinalPrice }}</p>
+    <p>Итого: {{ formattedPrice }}</p>
     <button type="button" class="button" :disabled="disabled" @click="getPrice">
       Готовьте!
     </button>
@@ -10,18 +10,12 @@
 <script>
 import { formatCurrency } from "@/common/helpers.js";
 
-import { has } from "lodash";
-
 export default {
   name: "BuilderPriceCounter",
   props: {
-    elementsWithPrice: {
-      type: Array,
-      required: true,
-    },
-    multiplier: {
+    price: {
       type: Number,
-      default: 1,
+      required: true,
     },
     disabled: {
       type: Boolean,
@@ -30,24 +24,12 @@ export default {
   },
   methods: {
     getPrice() {
-      this.$emit("getPrice", this.finalPrice);
+      this.$emit("getPrice");
     },
   },
   computed: {
-    standartPrice() {
-      return this.elementsWithPrice.reduce(
-        (totalPrice, element) =>
-          has(element, "total")
-            ? element.total * element.price + totalPrice
-            : element.price + totalPrice,
-        0
-      );
-    },
-    finalPrice() {
-      return this.standartPrice * this.multiplier;
-    },
-    formattedFinalPrice() {
-      return formatCurrency(this.finalPrice);
+    formattedPrice() {
+      return formatCurrency(this.price);
     },
   },
 };

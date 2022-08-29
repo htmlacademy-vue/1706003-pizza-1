@@ -27,7 +27,10 @@
               :key="ingredient.id"
               class="ingredients__item"
             >
-              <AppDrag :transfer-data="ingredient">
+              <AppDrag
+                :transfer-data="ingredient"
+                :draggable="ingredient.total < 3"
+              >
                 <SelectorItem
                   :class="`filling--${ingredient.value}`"
                   :ingredient="ingredient.name"
@@ -37,12 +40,6 @@
                 :min="0"
                 :max="3"
                 :counter="ingredient.total"
-                @incrementItem="
-                  chageAmountIngredient('increment', ingredient.value)
-                "
-                @decrementItem="
-                  chageAmountIngredient('decrement', ingredient.value)
-                "
                 @changeCounter="
                   (counter) => changeCounter(ingredient.value, counter)
                 "
