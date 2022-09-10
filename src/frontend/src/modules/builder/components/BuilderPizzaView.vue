@@ -4,9 +4,9 @@
       <AppDrop class="pizza__wrapper" @drop="addIngredient">
         <div
           v-for="ingredient in filteredIngredients"
-          :key="ingredient.id"
+          :key="ingredient.ingredientId"
           class="pizza__filling"
-          :class="ingredientClass(ingredient)"
+          :class="ingredientClass(ingredient.ingredientId)"
         ></div>
       </AppDrop>
     </div>
@@ -14,53 +14,68 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
 import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
-  props: {
-    dough: {
-      type: Object,
-      required: true,
-    },
-    size: {
-      type: Object,
-      required: true,
-    },
-    sauce: {
-      type: Object,
-      required: true,
-    },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
   computed: {
+    ...mapState("Builder", {
+      sauceId: "sauceId",
+      doughId: "doughId",
+      sizeId: "sizeId",
+      ingredientsQty: "ingredients",
+    }),
+    ...mapGetters([
+      "normolizedDought",
+      "normolizedSauces",
+      "normolizedIngredients",
+    ]),
     pizzaFoundationClass() {
       const doughClassModifier = {
         light: "small",
         large: "big",
       };
-      return `pizza--foundation--${doughClassModifier[this.dough.value]}-${
-        this.sauce.value
+      const dough = this.normolizedDought
+        .slice()
+        .find((dough) => dough.id === this.doughId);
+      const sauce = this.normolizedSauces
+        .slice()
+        .find((sauce) => sauce.id === this.sauceId);
+      return `pizza--foundation--${doughClassModifier[dough.value]}-${
+        sauce.value
       }`;
     },
     filteredIngredients() {
-      return this.ingredients.filter((ingredient) => ingredient.total > 0);
+      return this.ingredientsQty
+        .slice()
+        .filter((ingredient) => ingredient.quantity > 0);
     },
   },
   methods: {
-    ingredientClass(ingredient) {
+    ...mapActions("Builder", ["changeIngredientQty"]),
+    ingredientClass(id) {
       const classObj = {};
+      const ingredients = this.normolizedIngredients.slice();
+      const ingredient = ingredients.find((ingredient) => ingredient.id === id);
+      const quantity = this.ingredientsQty
+        .slice()
+        .find((ingredient) => ingredient.ingredientId === id).quantity;
       classObj[`pizza__filling--${ingredient.value}`] = true;
-      classObj["pizza__filling--second"] = ingredient.total == 2;
-      classObj["pizza__filling--third"] = ingredient.total > 2;
+      classObj["pizza__filling--second"] = quantity == 2;
+      classObj["pizza__filling--third"] = quantity > 2;
       return classObj;
     },
     addIngredient(ingredient) {
-      this.$emit("addIngredient", ingredient.id);
+      const qty = this.ingredientsQty
+        .slice()
+        .find((element) => element.ingredientId === ingredient.id).quantity;
+
+      if (qty <= 2) {
+        this.changeIngredientQty({ id: ingredient.id, quantity: qty + 1 });
+      }
     },
   },
 };

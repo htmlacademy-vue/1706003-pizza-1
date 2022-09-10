@@ -1,7 +1,12 @@
 <template>
   <div class="content__result">
     <p>Итого: {{ formattedPrice }}</p>
-    <button type="button" class="button" :disabled="disabled" @click="getPrice">
+    <button
+      type="button"
+      class="button"
+      :disabled="disabled"
+      @click="addToOrder"
+    >
       Готовьте!
     </button>
   </div>
@@ -23,8 +28,8 @@ export default {
     },
   },
   methods: {
-    getPrice() {
-      this.$emit("getPrice");
+    addToOrder() {
+      this.$emit("addToOrder");
     },
   },
   computed: {

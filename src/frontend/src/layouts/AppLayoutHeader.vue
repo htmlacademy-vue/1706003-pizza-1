@@ -24,12 +24,12 @@
             <img
               :src="user.avatar.jpg"
               :srcset="user.avatar.jpg2x"
-              alt="Василий Ложкин"
+              :alt="user.name"
               width="32"
               height="32"
             />
           </picture>
-          <span>Василий Ложкин</span>
+          <span>{{ user.name }}</span>
         </router-link>
         <router-link to="/login" class="header__logout">
           <span>Выйти</span>
@@ -43,25 +43,19 @@
 </template>
 
 <script>
-import { formatCurrency } from "@/common/helpers.js";
+import { mapGetters } from "vuex";
+
+import { formatCurrency, normalizeUser } from "@/common/helpers.js";
 
 export default {
   name: "AppLayoutHeader",
-  props: {
-    user: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    cost: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-  },
   computed: {
+    ...mapGetters("Cart", ["cost"]),
     formatedCost() {
       return formatCurrency(this.cost);
+    },
+    user() {
+      return normalizeUser(this.$store.state.Auth.user);
     },
   },
 };

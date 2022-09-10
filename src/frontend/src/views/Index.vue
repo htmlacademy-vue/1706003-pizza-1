@@ -3,25 +3,11 @@
     <div>
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <BuilderDoughSelector
-          :doughArray="doughArray"
-          :curentDough="pizza.dough"
-          @changeDought="changeDought"
-        />
+        <BuilderDoughSelector />
 
-        <BuilderSizeSelector
-          :sizesArray="sizesArray"
-          :curentSize="pizza.size"
-          @changeSize="changeSize"
-        />
+        <BuilderSizeSelector />
 
-        <BuilderIngredientsSelector
-          :saucesArray="saucesArray"
-          :curentSauce="pizza.sauce"
-          :ingredientsArray="pizza.ingredients"
-          @changeSauce="changeSauce"
-          @chageAmountIngredient="chageAmountIngredient"
-        />
+        <BuilderIngredientsSelector />
 
         <form class="content__pizza" @submit.prevent>
           <label class="input">
@@ -35,18 +21,12 @@
             />
           </label>
 
-          <BuilderPizzaView
-            :dough="pizza.dough"
-            :size="pizza.size"
-            :sauce="pizza.sauce"
-            :ingredients="pizza.ingredients"
-            @addIngredient="addIngredient"
-          />
+          <BuilderPizzaView @addIngredient="addIngredient" />
 
           <BuilderPriceCounter
             :price="finalPrice"
             :disabled="disabledGetPrice"
-            @getPrice="getPrice"
+            @addToOrder="addToOrder"
           />
         </form>
       </div>
@@ -55,13 +35,13 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
-
-import { has } from "lodash";
 
 export default {
   name: "IndexHome",
@@ -72,63 +52,16 @@ export default {
     BuilderPriceCounter,
     BuilderPizzaView,
   },
-  props: {
-    doughArray: {
-      type: Array,
-      required: true,
-    },
-    ingredientsArray: {
-      type: Array,
-      required: true,
-    },
-    saucesArray: {
-      type: Array,
-      required: true,
-    },
-    sizesArray: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       pizza: {
-        size: this.sizesArray[0],
-        sauce: this.saucesArray[0],
-        dough: this.doughArray[0],
-        ingredients: this.ingredientsArray.map((ingredient) => ({
-          ...ingredient,
-          total: 0,
-        })),
-        price: 0,
         name: "",
       },
     };
   },
   methods: {
-    test(value) {
-      console.log("TEST", value);
-    },
-    getPrice(price) {
-      this.pizza.price = price;
-    },
-    changeDought(value) {
-      this.pizza.dough = this.doughArray.find((dough) => dough.value === value);
-    },
-    changeSize(value) {
-      this.pizza.size = this.sizesArray.find((size) => size.value === value);
-    },
-    changeSauce(value) {
-      this.pizza.sauce = this.saucesArray.find(
-        (sauce) => sauce.value === value
-      );
-    },
-    chageAmountIngredient(value, counter) {
-      const ingredient = this.pizza.ingredients.find(
-        (ingredient) => ingredient.value === value
-      );
-      ingredient.total = counter;
-    },
+    ...mapActions("Builder", ["changeName", "resetStateModule"]),
+    ...mapActions("Cart", ["addPizzaToCart"]),
     addIngredient(id) {
       const ingredient = this.pizza.ingredients.find(
         (ingredient) => ingredient.id === id
@@ -137,36 +70,76 @@ export default {
         ingredient.total += 1;
       }
     },
+    addToOrder() {
+      this.changeName({ name: this.pizza.name });
+      this.addPizzaToCart();
+      this.resetBuilder();
+    },
+    resetBuilder() {
+      this.resetStateModule();
+      this.pizza.name = "";
+    },
   },
   computed: {
+    ...mapState("Builder", {
+      sauceId: "sauceId",
+      doughId: "doughId",
+      sizeId: "sizeId",
+      ingredientsQty: "ingredients",
+    }),
+    ...mapState(["dough", "sauces", "ingredients", "sizes"]),
+    multiplier() {
+      return this.sizes.slice().find((size) => size.id === this.sizeId)
+        .multiplier;
+    },
     disabledGetPrice() {
       return (
         !this.pizza.name ||
-        !this.pizza.ingredients.filter((ingredient) => ingredient.total).length
+        !this.ingredientsQty.slice().filter((ingredient) => ingredient.quantity)
+          .length
       );
     },
     standartPrice() {
-      const elementsWithPrice = [
-        this.pizza.sauce,
-        this.pizza.dough,
-        ...this.pizza.ingredients,
-      ];
-      return elementsWithPrice.reduce(
-        (totalPrice, element) =>
-          has(element, "total")
-            ? element.total * element.price + totalPrice
-            : element.price + totalPrice,
+      let mainCost;
+      let addedCost;
+      let ingredientsPrice = {};
+      const sauce = this.sauces
+        .slice()
+        .find((sauce) => sauce.id === this.sauceId);
+      const dough = this.dough
+        .slice()
+        .find((dough) => dough.id === this.doughId);
+
+      mainCost = dough.price + sauce.price;
+
+      this.ingredients
+        .slice()
+        .forEach(
+          (ingredient) =>
+            (ingredientsPrice[ingredient.id] = { price: ingredient.price })
+        );
+      this.ingredientsQty
+        .slice()
+        .forEach(
+          (ingredient) =>
+            (ingredientsPrice[ingredient.ingredientId].quantity =
+              ingredient.quantity)
+        );
+
+      addedCost = Object.values(ingredientsPrice).reduce(
+        (cost, ingredient) => ingredient.price * ingredient.quantity + cost,
         0
       );
+
+      return mainCost + addedCost;
     },
     finalPrice() {
-      return this.standartPrice * this.pizza.size.multiplier;
+      return this.standartPrice * this.multiplier;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/scss/layout/header.scss";
 @import "~@/assets/scss/layout/content.scss";
 </style>
