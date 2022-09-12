@@ -1,5 +1,5 @@
 <template>
-  <component :is="layout">
+  <component :is="layout" class="app-layout">
     <slot />
   </component>
 </template>
@@ -17,3 +17,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.app-layout {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 960px;
+  min-height: 100vh;
+}
+</style>

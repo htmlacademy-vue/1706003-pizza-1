@@ -6,12 +6,12 @@
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
           <RadioButton
-            v-for="sauce in saucesArray"
+            v-for="sauce in normolizedSauces"
             :key="sauce.id"
-            :value="sauce.value"
-            :name="'dough'"
-            :isChecked="curentSauce.value === sauce.value"
-            @change="changeSauce"
+            :value="sauce.id"
+            :name="'sauce'"
+            :checked="selectedSauceId === sauce.id"
+            @change="changeSauceId({ id: sauce.id })"
             class="radio ingredients__input"
           >
             <span>{{ sauce.name }}</span>
@@ -23,13 +23,13 @@
 
           <ul class="ingredients__list">
             <li
-              v-for="ingredient in ingredientsArray"
+              v-for="ingredient in normolizedIngredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
               <AppDrag
                 :transfer-data="ingredient"
-                :draggable="ingredient.total < 3"
+                :draggable="ingredientQtyById(ingredient.id) < 3"
               >
                 <SelectorItem
                   :class="`filling--${ingredient.value}`"
@@ -39,10 +39,11 @@
               <ItemCounter
                 :min="0"
                 :max="3"
-                :counter="ingredient.total"
+                :counter="ingredientQtyById(ingredient.id)"
                 @changeCounter="
-                  (counter) => changeCounter(ingredient.value, counter)
+                  changeIngredientQty({ id: ingredient.id, quantity: $event })
                 "
+                class="ingredients__counter"
               />
             </li>
           </ul>
@@ -53,6 +54,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 import ContentSheet from "@/common/components/ContentSheet.vue";
 import SelectorItem from "@/common/components/SelectorItem.vue";
 import ItemCounter from "@/common/components/ItemCounter.vue";
@@ -68,29 +71,22 @@ export default {
     RadioButton,
     AppDrag,
   },
-  props: {
-    saucesArray: {
-      type: Array,
-      required: true,
+  computed: {
+    ...mapGetters(["normolizedSauces", "normolizedIngredients"]),
+    selectedSauceId() {
+      return this.$store.state.Builder.sauceId;
     },
-    curentSauce: {
-      type: Object,
-      required: true,
-    },
-    ingredientsArray: {
-      type: Array,
-      required: true,
+    selectedIngredients() {
+      return this.$store.state.Builder.ingredients;
     },
   },
   methods: {
-    changeSauce(value) {
-      this.$emit("changeSauce", value);
-    },
-    chageAmountIngredient(action, value) {
-      this.$emit("chageAmountIngredient", action, value);
-    },
-    changeCounter(value, counter) {
-      this.$emit("chageAmountIngredient", value, counter);
+    ...mapActions("Builder", ["changeSauceId", "changeIngredientQty"]),
+    ingredientQtyById(id) {
+      const ingredient = this.selectedIngredients.find(
+        (ingredient) => ingredient.ingredientId === id
+      );
+      return ingredient.quantity;
     },
   },
 };

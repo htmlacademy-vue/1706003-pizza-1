@@ -4,12 +4,12 @@
       <template #title>Выберите тесто</template>
       <template #content>
         <RadioButton
-          v-for="dough in doughArray"
+          v-for="dough in normolizedDought"
           :key="dough.id"
-          :value="dough.value"
+          :value="dough.id"
           :name="'dough'"
-          :isChecked="curentDough.value === dough.value"
-          @change="changeDought"
+          :checked="selectedDoughId === dough.id"
+          @change="changeDoughId({ id: dough.id })"
           class="dough__input"
           :class="`dough__input--${dough.value}`"
         >
@@ -22,26 +22,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 import ContentSheet from "@/common/components/ContentSheet.vue";
 import RadioButton from "@/common/components/RadioButton.vue";
 
 export default {
   name: "BuilderDoughSelector",
   components: { ContentSheet, RadioButton },
-  props: {
-    doughArray: {
-      type: Array,
-      required: true,
-    },
-    curentDough: {
-      type: Object,
-      required: true,
+  computed: {
+    ...mapGetters(["normolizedDought"]),
+    selectedDoughId() {
+      return this.$store.state.Builder.doughId;
     },
   },
   methods: {
-    changeDought(value) {
-      this.$emit("changeDought", value);
-    },
+    ...mapActions("Builder", ["changeDoughId"]),
   },
 };
 </script>

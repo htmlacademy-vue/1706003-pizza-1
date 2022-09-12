@@ -4,12 +4,12 @@
       <template #title>Выберите размер</template>
       <template #content>
         <RadioButton
-          v-for="size in sizesArray"
+          v-for="size in normolizedSizes"
           :key="size.id"
-          :value="size.value"
+          :value="size.id"
           :name="'size'"
-          :isChecked="curentSize.value === size.value"
-          @change="changeSize"
+          :checked="selectedSizeId === size.id"
+          @change="changeSizeId({ id: size.id })"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
         >
@@ -21,26 +21,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 import ContentSheet from "@/common/components/ContentSheet.vue";
 import RadioButton from "@/common/components/RadioButton.vue";
 
 export default {
   name: "BuilderSizeSelector",
   components: { ContentSheet, RadioButton },
-  props: {
-    sizesArray: {
-      type: Array,
-      required: true,
-    },
-    curentSize: {
-      type: Object,
-      required: true,
+  computed: {
+    ...mapGetters(["normolizedSizes"]),
+    selectedSizeId() {
+      return this.$store.state.Builder.sizeId;
     },
   },
   methods: {
-    changeSize(value) {
-      this.$emit("changeSize", value);
-    },
+    ...mapActions("Builder", ["changeSizeId"]),
   },
 };
 </script>

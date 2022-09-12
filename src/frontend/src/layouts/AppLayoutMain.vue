@@ -1,6 +1,6 @@
 <template>
-  <div class="app-layout">
-    <AppLayoutHeader :user="user" :cost="cost" />
+  <div>
+    <AppLayoutHeader />
     <main class="layout">
       <AppLayoutMainSidebar />
       <div class="layout__content">
@@ -11,11 +11,6 @@
 </template>
 
 <script>
-import user from "@/static/user.json";
-import misc from "@/static/misc.json";
-
-import { normalizeUser } from "@/common/helpers.js";
-
 import AppLayoutMainSidebar from "@/layouts/AppLayoutMainSidebar";
 import AppLayoutHeader from "@/layouts/AppLayoutHeader.vue";
 
@@ -24,17 +19,6 @@ export default {
   components: {
     AppLayoutHeader,
     AppLayoutMainSidebar,
-  },
-  data() {
-    return {
-      order: misc,
-      user: normalizeUser(user),
-    };
-  },
-  computed: {
-    cost() {
-      return this.order.reduce((cost, product) => cost + product.price, 0);
-    },
   },
 };
 </script>
