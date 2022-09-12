@@ -4,18 +4,14 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select
-          name="сomment"
-          class="select"
-          :selected="selectedDeliveryMethod"
-          @change="changeDeliveryMethods"
-        >
+        <select name="сomment" class="select" @change="changeDeliveryMethod">
           <option
             v-for="method in deliveryMethods"
             :key="method.id"
             :value="method.id"
+            :selected="method.id === selectedDeliveryMethod.id"
           >
-            {{ method.text }}
+            {{ method.name }}
           </option>
         </select>
       </label>
@@ -43,7 +39,8 @@
               name="street"
               required
               @input="changeStreet"
-              :value="street"
+              :value="selectedDeliveryMethod.street || street"
+              :disabled="selectedDeliveryMethod.street"
             />
           </label>
         </div>
@@ -56,7 +53,8 @@
               name="house"
               required
               @input="changeBuilding"
-              :value="building"
+              :value="selectedDeliveryMethod.building || building"
+              :disabled="selectedDeliveryMethod.building"
             />
           </label>
         </div>
@@ -68,7 +66,8 @@
               type="text"
               name="apartment"
               @input="changeFlat"
-              :value="flat"
+              :value="selectedDeliveryMethod.flat || flat"
+              :disabled="selectedDeliveryMethod.flat"
             />
           </label>
         </div>
@@ -86,41 +85,44 @@ export default {
       required: true,
     },
     selectedDeliveryMethod: {
-      type: Number,
-      requred: true,
+      type: Object,
+      required: true,
     },
     phone: {
       type: String,
-      requred: true,
+      required: true,
     },
     street: {
       type: String,
-      requred: true,
+      required: true,
     },
     building: {
       type: String,
-      requred: true,
+      required: true,
     },
     flat: {
       type: String,
-      requred: true,
+      required: true,
     },
   },
   methods: {
-    changeDeliveryMethods(event) {
-      this.$emit("changeDeliveryMethods", Number(event.target.value));
+    changeDeliveryMethod(event) {
+      const selectedDeliveryMethod = this.deliveryMethods.find(
+        (method) => method.id === Number(event.target.value)
+      );
+      this.$emit("update:selectedDeliveryMethod", selectedDeliveryMethod);
     },
     changePhone(event) {
-      this.$emit("changePhone", event.target.value);
+      this.$emit("update:phone", event.target.value);
     },
     changeStreet(event) {
-      this.$emit("changeStreet", event.target.value);
+      this.$emit("update:street", event.target.value);
     },
     changeBuilding(event) {
-      this.$emit("changeBuilding", event.target.value);
+      this.$emit("update:building", event.target.value);
     },
     changeFlat(event) {
-      this.$emit("changeFlat", event.target.value);
+      this.$emit("update:flat", event.target.value);
     },
   },
 };
@@ -139,7 +141,7 @@ export default {
 
   margin-right: auto;
 
-  span {
+  .cart-form__label {
     margin-right: 16px;
   }
 }

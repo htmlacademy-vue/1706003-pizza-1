@@ -1,4 +1,4 @@
-import { uniqueId } from "lodash";
+import uniqueId from "lodash/uniqueId";
 
 import misc from "@/static/misc.json";
 
@@ -18,6 +18,14 @@ export default {
     ADD_PIZZA_TO_CART(state, { pizza }) {
       state.pizzas.push(pizza);
     },
+    REPLACE_PIZZA_IN_CART(state, { pizza }) {
+      const oldPizza = state.pizzas.find((element) => element.id === pizza.id);
+      oldPizza.name = pizza.name;
+      oldPizza.sauceId = pizza.sauceId;
+      oldPizza.doughId = pizza.doughId;
+      oldPizza.sizeId = pizza.sizeId;
+      oldPizza.ingredients = pizza.ingredients;
+    },
     CHANGE_QTY(state, { entity, id, qty }) {
       state[entity].find((element) => element.id === id).quantity = qty;
     },
@@ -31,31 +39,27 @@ export default {
         let mainCost;
         let addedCost;
         let ingredientsPrice = {};
-        const sauce = rootGetters.normolizedSauces
-          .slice()
-          .find((sauce) => sauce.id === pizza.sauceId);
-        const dough = rootGetters.normolizedDought
-          .slice()
-          .find((dough) => dough.id === pizza.doughId);
-        const size = rootGetters.normolizedSizes
-          .slice()
-          .find((size) => size.id === pizza.sizeId);
+        const sauce = rootGetters.normolizedSauces.find(
+          (sauce) => sauce.id === pizza.sauceId
+        );
+        const dough = rootGetters.normolizedDought.find(
+          (dough) => dough.id === pizza.doughId
+        );
+        const size = rootGetters.normolizedSizes.find(
+          (size) => size.id === pizza.sizeId
+        );
 
         mainCost = dough.price + sauce.price;
 
-        rootGetters.normolizedIngredients
-          .slice()
-          .forEach(
-            (ingredient) =>
-              (ingredientsPrice[ingredient.id] = { price: ingredient.price })
-          );
-        pizza.ingredients
-          .slice()
-          .forEach(
-            (ingredient) =>
-              (ingredientsPrice[ingredient.ingredientId].quantity =
-                ingredient.quantity)
-          );
+        rootGetters.normolizedIngredients.forEach(
+          (ingredient) =>
+            (ingredientsPrice[ingredient.id] = { price: ingredient.price })
+        );
+        pizza.ingredients.forEach(
+          (ingredient) =>
+            (ingredientsPrice[ingredient.ingredientId].quantity =
+              ingredient.quantity)
+        );
         addedCost = Object.values(ingredientsPrice).reduce(
           (cost, ingredient) => ingredient.price * ingredient.quantity + cost,
           0
@@ -86,6 +90,12 @@ export default {
         quantity: 1,
       };
       commit("ADD_PIZZA_TO_CART", { pizza });
+    },
+    replacePizzaInCart({ commit, rootState }) {
+      const pizza = {
+        ...rootState.Builder,
+      };
+      commit("REPLACE_PIZZA_IN_CART", { pizza });
     },
     changePizzaQty({ commit }, { id, qty }) {
       commit("CHANGE_QTY", { entity: "pizzas", id, qty });

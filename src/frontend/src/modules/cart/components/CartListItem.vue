@@ -31,7 +31,9 @@
     </div>
 
     <div class="cart-list__button">
-      <button type="button" class="cart-list__edit">Изменить</button>
+      <button type="button" class="cart-list__edit" @click="changePizza">
+        Изменить
+      </button>
     </div>
   </li>
 </template>
@@ -90,18 +92,14 @@ export default {
     },
     ingredients() {
       let ingredientsObj = {};
-      this.normolizedIngredients
-        .slice()
-        .forEach(
-          (ingredient) => (ingredientsObj[ingredient.id] = { ...ingredient })
-        );
-      this.ingredientsId
-        .slice()
-        .forEach(
-          (ingredient) =>
-            (ingredientsObj[ingredient.ingredientId].quantity =
-              ingredient.quantity)
-        );
+      this.normolizedIngredients.forEach(
+        (ingredient) => (ingredientsObj[ingredient.id] = { ...ingredient })
+      );
+      this.ingredientsId.forEach(
+        (ingredient) =>
+          (ingredientsObj[ingredient.ingredientId].quantity =
+            ingredient.quantity)
+      );
       return Object.values(ingredientsObj);
     },
     multiplier() {
@@ -131,6 +129,9 @@ export default {
   methods: {
     changeQty(qty) {
       this.$emit("changeQty", qty);
+    },
+    changePizza() {
+      this.$emit("changePizza");
     },
   },
 };

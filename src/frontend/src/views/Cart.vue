@@ -14,19 +14,13 @@
         <template v-else>
           <CartList />
           <CartAdditionalList />
-
           <CartForm
             :deliveryMethods="deliveryMethods"
-            :selectedDeliveryMethod="contactInfo.address.comment"
-            :phone="contactInfo.phone"
-            :street="contactInfo.address.street"
-            :building="contactInfo.address.building"
-            :flat="contactInfo.address.flat"
-            @changeDeliveryMethods="changeDeliveryMethods"
-            @changePhone="changePhone"
-            @changeStreet="changeStreet"
-            @changeBuilding="changeBuilding"
-            @changeFlat="changeFlat"
+            :selectedDeliveryMethod.sync="selectedDeliveryMethods"
+            :phone.sync="contactInfo.phone"
+            :street.sync="contactInfo.address.street"
+            :building.sync="contactInfo.address.building"
+            :flat.sync="contactInfo.address.flat"
           />
         </template>
       </div>
@@ -44,6 +38,11 @@ import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditionalList from "@/modules/cart/components/CartAdditionalList.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
 
+const standartDeliveryMethods = [
+  { id: 1, name: "Заберу сам" },
+  { id: 2, name: "Новый адрес" },
+];
+
 export default {
   name: "Cart",
   components: {
@@ -58,18 +57,14 @@ export default {
       popup: {
         isOpen: false,
       },
-      deliveryMethods: [
-        { id: 1, text: "Заберу сам" },
-        { id: 2, text: "Новый адрес" },
-        { id: 3, text: "Дом" },
-      ],
+      selectedDeliveryMethods: standartDeliveryMethods[0],
       contactInfo: {
         phone: "",
         address: {
           street: "",
           building: "",
           flat: "",
-          comment: 1,
+          comment: "",
         },
       },
     };
@@ -92,25 +87,21 @@ export default {
         misc: this.misc,
       });
     },
-    changeDeliveryMethods(newDeliveryMethods) {
-      this.contactInfo.address.comment = newDeliveryMethods;
-    },
-    changePhone(newPhone) {
-      this.contactInfo.phone = newPhone;
-    },
-    changeStreet(newStreet) {
-      this.contactInfo.address.street = newStreet;
-    },
-    changeBuilding(newBuilding) {
-      this.contactInfo.address.building = newBuilding;
-    },
-    changeFlat(newFlat) {
-      this.contactInfo.address.flat = newFlat;
-    },
   },
   computed: {
     ...mapState("Cart", ["misc", "pizzas"]),
+    ...mapState("Auth", ["addresses", "user"]),
     ...mapGetters("Cart", ["cost"]),
+    deliveryMethods() {
+      let methods = standartDeliveryMethods.slice();
+      if (this.user && this.user.id) {
+        methods = [
+          ...methods,
+          ...this.addresses.filter((adress) => adress.userId === this.user.id),
+        ];
+      }
+      return methods;
+    },
   },
 };
 </script>

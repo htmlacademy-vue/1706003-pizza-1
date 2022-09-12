@@ -11,7 +11,7 @@
           :min="0"
           :counter="quantity"
           :buttonColor="'orange'"
-          @changeCounter="(counter) => changeQty(counter)"
+          @changeCounter="changeQty"
           class="additional-list__counter"
         />
 

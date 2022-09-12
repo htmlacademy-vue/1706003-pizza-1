@@ -38,40 +38,41 @@ export default {
         light: "small",
         large: "big",
       };
-      const dough = this.normolizedDought
-        .slice()
-        .find((dough) => dough.id === this.doughId);
-      const sauce = this.normolizedSauces
-        .slice()
-        .find((sauce) => sauce.id === this.sauceId);
+      const dough = this.normolizedDought.find(
+        (dough) => dough.id === this.doughId
+      );
+      const sauce = this.normolizedSauces.find(
+        (sauce) => sauce.id === this.sauceId
+      );
       return `pizza--foundation--${doughClassModifier[dough.value]}-${
         sauce.value
       }`;
     },
     filteredIngredients() {
-      return this.ingredientsQty
-        .slice()
-        .filter((ingredient) => ingredient.quantity > 0);
+      return this.ingredientsQty.filter(
+        (ingredient) => ingredient.quantity > 0
+      );
     },
   },
   methods: {
     ...mapActions("Builder", ["changeIngredientQty"]),
     ingredientClass(id) {
       const classObj = {};
-      const ingredients = this.normolizedIngredients.slice();
-      const ingredient = ingredients.find((ingredient) => ingredient.id === id);
-      const quantity = this.ingredientsQty
-        .slice()
-        .find((ingredient) => ingredient.ingredientId === id).quantity;
+      const ingredient = this.normolizedIngredients.find(
+        (ingredient) => ingredient.id === id
+      );
+      const quantity = this.ingredientsQty.find(
+        (ingredient) => ingredient.ingredientId === id
+      ).quantity;
       classObj[`pizza__filling--${ingredient.value}`] = true;
       classObj["pizza__filling--second"] = quantity == 2;
       classObj["pizza__filling--third"] = quantity > 2;
       return classObj;
     },
     addIngredient(ingredient) {
-      const qty = this.ingredientsQty
-        .slice()
-        .find((element) => element.ingredientId === ingredient.id).quantity;
+      const qty = this.ingredientsQty.find(
+        (element) => element.ingredientId === ingredient.id
+      ).quantity;
 
       if (qty <= 2) {
         this.changeIngredientQty({ id: ingredient.id, quantity: qty + 1 });

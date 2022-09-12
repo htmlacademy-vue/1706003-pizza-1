@@ -9,7 +9,8 @@
       :sizeId="pizza.sizeId"
       :ingredientsId="pizza.ingredients"
       :quantity="pizza.quantity"
-      @changeQty="(qty) => changePizzaQty({ id: pizza.id, qty })"
+      @changeQty="changePizzaQty({ id: pizza.id, qty: $event })"
+      @changePizza="changePizza(pizza.id)"
     />
   </ul>
 </template>
@@ -27,6 +28,11 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["changePizzaQty"]),
+    ...mapActions("Builder", ["getPizzaInOrder"]),
+    changePizza(id) {
+      this.getPizzaInOrder({ id });
+      this.$router.push("/");
+    },
   },
 };
 </script>

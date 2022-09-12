@@ -41,11 +41,7 @@
                 :max="3"
                 :counter="ingredientQtyById(ingredient.id)"
                 @changeCounter="
-                  (counter) =>
-                    changeIngredientQty({
-                      id: ingredient.id,
-                      quantity: counter,
-                    })
+                  changeIngredientQty({ id: ingredient.id, quantity: $event })
                 "
                 class="ingredients__counter"
               />

@@ -21,10 +21,10 @@
             />
           </label>
 
-          <BuilderPizzaView @addIngredient="addIngredient" />
+          <BuilderPizzaView />
 
           <BuilderPriceCounter
-            :price="finalPrice"
+            :price="pizzaPrice"
             :disabled="disabledGetPrice"
             @addToOrder="addToOrder"
           />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
@@ -61,18 +61,14 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["changeName", "resetStateModule"]),
-    ...mapActions("Cart", ["addPizzaToCart"]),
-    addIngredient(id) {
-      const ingredient = this.pizza.ingredients.find(
-        (ingredient) => ingredient.id === id
-      );
-      if (ingredient.total <= 2) {
-        ingredient.total += 1;
-      }
-    },
+    ...mapActions("Cart", ["addPizzaToCart", "replacePizzaInCart"]),
     addToOrder() {
       this.changeName({ name: this.pizza.name });
-      this.addPizzaToCart();
+      if (this.id) {
+        this.replacePizzaInCart();
+      } else {
+        this.addPizzaToCart();
+      }
       this.resetBuilder();
     },
     resetBuilder() {
@@ -81,61 +77,17 @@ export default {
     },
   },
   computed: {
-    ...mapState("Builder", {
-      sauceId: "sauceId",
-      doughId: "doughId",
-      sizeId: "sizeId",
-      ingredientsQty: "ingredients",
-    }),
-    ...mapState(["dough", "sauces", "ingredients", "sizes"]),
-    multiplier() {
-      return this.sizes.slice().find((size) => size.id === this.sizeId)
-        .multiplier;
-    },
+    ...mapState("Builder", ["ingredients", "name", "id"]),
+    ...mapGetters("Builder", ["pizzaPrice"]),
     disabledGetPrice() {
       return (
         !this.pizza.name ||
-        !this.ingredientsQty.slice().filter((ingredient) => ingredient.quantity)
-          .length
+        !this.ingredients.filter((ingredient) => ingredient.quantity).length
       );
     },
-    standartPrice() {
-      let mainCost;
-      let addedCost;
-      let ingredientsPrice = {};
-      const sauce = this.sauces
-        .slice()
-        .find((sauce) => sauce.id === this.sauceId);
-      const dough = this.dough
-        .slice()
-        .find((dough) => dough.id === this.doughId);
-
-      mainCost = dough.price + sauce.price;
-
-      this.ingredients
-        .slice()
-        .forEach(
-          (ingredient) =>
-            (ingredientsPrice[ingredient.id] = { price: ingredient.price })
-        );
-      this.ingredientsQty
-        .slice()
-        .forEach(
-          (ingredient) =>
-            (ingredientsPrice[ingredient.ingredientId].quantity =
-              ingredient.quantity)
-        );
-
-      addedCost = Object.values(ingredientsPrice).reduce(
-        (cost, ingredient) => ingredient.price * ingredient.quantity + cost,
-        0
-      );
-
-      return mainCost + addedCost;
-    },
-    finalPrice() {
-      return this.standartPrice * this.multiplier;
-    },
+  },
+  mounted() {
+    this.pizza.name = this.name;
   },
 };
 </script>
