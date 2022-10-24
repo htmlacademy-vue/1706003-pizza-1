@@ -51,9 +51,11 @@
 }
 
 .layout__content {
+  height: calc(100vh - 91px);
   padding-top: 22px;
   padding-right: 2.12%;
   padding-left: 200px;
+  overflow: scroll;
 }
 
 .layout__title {

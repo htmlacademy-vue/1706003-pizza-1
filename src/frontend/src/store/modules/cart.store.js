@@ -1,80 +1,27 @@
-import uniqueId from "lodash/uniqueId";
-
-import misc from "@/static/misc.json";
-
-const getDefaultState = () => {
-  return {
-    pizzas: [],
-    misc: misc.map((product) => ({ ...product, quantity: 0 })),
-  };
-};
-
-const state = getDefaultState();
+import { pizzaPrice } from "@/common/helpers";
 
 export default {
   namespaced: true,
-  state,
-  mutations: {
-    ADD_PIZZA_TO_CART(state, { pizza }) {
-      state.pizzas.push(pizza);
-    },
-    REPLACE_PIZZA_IN_CART(state, { pizza }) {
-      const oldPizza = state.pizzas.find((element) => element.id === pizza.id);
-      oldPizza.name = pizza.name;
-      oldPizza.sauceId = pizza.sauceId;
-      oldPizza.doughId = pizza.doughId;
-      oldPizza.sizeId = pizza.sizeId;
-      oldPizza.ingredients = pizza.ingredients;
-    },
-    CHANGE_QTY(state, { entity, id, qty }) {
-      state[entity].find((element) => element.id === id).quantity = qty;
-    },
-    RESET_STATE(state) {
-      Object.assign(state, getDefaultState());
-    },
+  state: {
+    pizzas: [],
+    misc: [],
   },
   getters: {
     pizzasCost(state, getters, rootState, rootGetters) {
-      const pizzaCost = (pizza) => {
-        let mainCost;
-        let addedCost;
-        let ingredientsPrice = {};
-        const sauce = rootGetters.normolizedSauces.find(
-          (sauce) => sauce.id === pizza.sauceId
-        );
-        const dough = rootGetters.normolizedDought.find(
-          (dough) => dough.id === pizza.doughId
-        );
-        const size = rootGetters.normolizedSizes.find(
-          (size) => size.id === pizza.sizeId
-        );
-
-        mainCost = dough.price + sauce.price;
-
-        rootGetters.normolizedIngredients.forEach(
-          (ingredient) =>
-            (ingredientsPrice[ingredient.id] = { price: ingredient.price })
-        );
-        pizza.ingredients.forEach(
-          (ingredient) =>
-            (ingredientsPrice[ingredient.ingredientId].quantity =
-              ingredient.quantity)
-        );
-        addedCost = Object.values(ingredientsPrice).reduce(
-          (cost, ingredient) => ingredient.price * ingredient.quantity + cost,
-          0
-        );
-        return (mainCost + addedCost) * size.multiplier;
-      };
-
       return state.pizzas.reduce(
-        (cost, pizza) => pizzaCost(pizza) * pizza.quantity + cost,
+        (cost, pizza) =>
+          pizzaPrice({ elId: pizza, elDescription: rootGetters }) *
+            pizza.quantity +
+          cost,
         0
       );
     },
-    miscCost(state) {
+    miscCost(state, getters, rootState) {
       return state.misc.reduce(
-        (cost, element) => element.price * element.quantity + cost,
+        (cost, element) =>
+          rootState.misc.find(({ id }) => id === element.miscId).price *
+            element.quantity +
+          cost,
         0
       );
     },
@@ -83,28 +30,76 @@ export default {
     },
   },
   actions: {
-    addPizzaToCart({ commit, rootState }) {
+    addPizzaToCart({ commit }, { pizza }) {
+      commit(
+        "ADD_ENTITY",
+        {
+          module: "Cart",
+          entity: "pizzas",
+          value: pizza,
+        },
+        { root: true }
+      );
+    },
+    changePizzaQty({ commit, state }, { index, quantity }) {
       const pizza = {
-        ...rootState.Builder,
-        id: Number(uniqueId()),
-        quantity: 1,
+        ...state.pizzas[index],
+        quantity,
       };
-      commit("ADD_PIZZA_TO_CART", { pizza });
+      commit(
+        "UPDATE_ENTITY",
+        {
+          module: "Cart",
+          entity: "pizzas",
+          value: pizza,
+          id: null,
+          idx: index,
+        },
+        { root: true }
+      );
     },
-    replacePizzaInCart({ commit, rootState }) {
-      const pizza = {
-        ...rootState.Builder,
-      };
-      commit("REPLACE_PIZZA_IN_CART", { pizza });
+    changeMiscQty({ commit }, { misc }) {
+      commit(
+        "UPDATE_ENTITY",
+        {
+          module: "Cart",
+          entity: "misc",
+          value: misc,
+          nameId: "miscId",
+          idx: null,
+        },
+        { root: true }
+      );
     },
-    changePizzaQty({ commit }, { id, qty }) {
-      commit("CHANGE_QTY", { entity: "pizzas", id, qty });
+    deletePizzaFromCart({ commit }, { index }) {
+      commit(
+        "DELETE_ENTITY",
+        {
+          module: "Cart",
+          entity: "pizzas",
+          idx: index,
+        },
+        { root: true }
+      );
     },
-    changeMiscQty({ commit }, { id, qty }) {
-      commit("CHANGE_QTY", { entity: "misc", id, qty });
-    },
-    resetStateModule({ commit }) {
-      commit("RESET_STATE");
+    resetCartState({ commit, rootState }) {
+      commit(
+        "SET_ENTITY",
+        { module: "Cart", entity: "pizzas", value: [] },
+        { root: true }
+      );
+      commit(
+        "SET_ENTITY",
+        {
+          module: "Cart",
+          entity: "misc",
+          value: rootState.misc.map((misc) => ({
+            miscId: misc.id,
+            quantity: 0,
+          })),
+        },
+        { root: true }
+      );
     },
   },
 };

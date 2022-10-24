@@ -14,7 +14,7 @@
       <router-link to="/cart">{{ formatedCost }}</router-link>
     </div>
     <div class="header__user">
-      <template v-if="user && user.id">
+      <template v-if="isAuthenticated">
         <router-link to="/profile">
           <picture>
             <source
@@ -31,11 +31,11 @@
           </picture>
           <span>{{ user.name }}</span>
         </router-link>
-        <router-link to="/login" class="header__logout">
+        <a href="#" class="header__logout" @click.prevent="logout">
           <span>Выйти</span>
-        </router-link>
+        </a>
       </template>
-      <router-link v-else to="/login" class="header__login">
+      <router-link v-else :to="{ path: 'login' }" class="header__login" append>
         <span>Войти</span>
       </router-link>
     </div>
@@ -43,19 +43,23 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
-import { formatCurrency, normalizeUser } from "@/common/helpers.js";
+import { formatCurrency } from "@/common/helpers.js";
 
 export default {
   name: "AppLayoutHeader",
   computed: {
-    ...mapGetters("Cart", ["cost"]),
+    ...mapGetters("Auth", { user: "normolizedUser" }),
+    ...mapState("Auth", ["isAuthenticated"]),
     formatedCost() {
-      return formatCurrency(this.cost);
+      return formatCurrency(this.$store.getters["Cart/cost"]);
     },
-    user() {
-      return normalizeUser(this.$store.state.Auth.user);
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch("Auth/logout");
+      await this.$router.push("/");
     },
   },
 };

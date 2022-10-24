@@ -9,7 +9,7 @@
           :value="size.id"
           :name="'size'"
           :checked="selectedSizeId === size.id"
-          @change="changeSizeId({ id: size.id })"
+          @change="changeBuilderEntity({ entity: 'sizeId', value: size.id })"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
         >
@@ -36,7 +36,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeSizeId"]),
+    ...mapActions("Builder", ["changeBuilderEntity"]),
   },
 };
 </script>

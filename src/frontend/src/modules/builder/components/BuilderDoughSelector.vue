@@ -9,7 +9,7 @@
           :value="dough.id"
           :name="'dough'"
           :checked="selectedDoughId === dough.id"
-          @change="changeDoughId({ id: dough.id })"
+          @change="changeBuilderEntity({ entity: 'doughId', value: dough.id })"
           class="dough__input"
           :class="`dough__input--${dough.value}`"
         >
@@ -37,7 +37,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeDoughId"]),
+    ...mapActions("Builder", ["changeBuilderEntity"]),
   },
 };
 </script>

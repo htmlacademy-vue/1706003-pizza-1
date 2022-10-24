@@ -2,7 +2,7 @@
   <li class="additional-list__item sheet">
     <div>
       <p class="additional-list__description">
-        <img :src="imgSrc" :alt="name" width="39" height="60" />
+        <img :src="image" :alt="name" width="39" height="60" />
         <span>{{ name }}</span>
       </p>
 
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import ItemCounter from "@/common/components/ItemCounter.vue";
 
 import { formatCurrency } from "@/common/helpers.js";
@@ -32,16 +34,16 @@ export default {
   name: "CartAdditionalListItem",
   components: { ItemCounter },
   props: {
-    imgSrc: {
-      type: String,
+    miscId: {
+      type: Number,
       required: true,
     },
     name: {
       type: String,
       required: true,
     },
-    quantity: {
-      type: Number,
+    image: {
+      type: String,
       required: true,
     },
     price: {
@@ -50,8 +52,14 @@ export default {
     },
   },
   computed: {
+    ...mapState("Cart", ["misc"]),
+
     formattedPrice() {
       return formatCurrency(this.price);
+    },
+    quantity() {
+      return this.misc.find((product) => product.miscId === this.miscId)
+        .quantity;
     },
   },
   methods: {
