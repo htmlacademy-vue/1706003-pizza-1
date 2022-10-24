@@ -14,18 +14,12 @@
         <template v-else>
           <CartList />
           <CartAdditionalList />
-          <CartForm
-            :deliveryMethods="deliveryMethods"
-            :selectedDeliveryMethod.sync="selectedDeliveryMethods"
-            :phone.sync="contactInfo.phone"
-            :street.sync="contactInfo.address.street"
-            :building.sync="contactInfo.address.building"
-            :flat.sync="contactInfo.address.flat"
-          />
+          <CartForm ref="cartForm" />
         </template>
       </div>
     </main>
     <CartFooter :orderCost="cost" />
+    <router-view />
   </form>
 </template>
 
@@ -37,11 +31,6 @@ import CartFooter from "@/modules/cart/components/CartFooter.vue";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditionalList from "@/modules/cart/components/CartAdditionalList.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
-
-const standartDeliveryMethods = [
-  { id: 1, name: "Заберу сам" },
-  { id: 2, name: "Новый адрес" },
-];
 
 export default {
   name: "Cart",
@@ -57,50 +46,37 @@ export default {
       popup: {
         isOpen: false,
       },
-      selectedDeliveryMethods: standartDeliveryMethods[0],
-      contactInfo: {
-        phone: "",
-        address: {
-          street: "",
-          building: "",
-          flat: "",
-          comment: "",
-        },
-      },
     };
   },
+  computed: {
+    ...mapState("Cart", ["pizzas", "misc"]),
+    ...mapState("Auth", ["user"]),
+    ...mapGetters("Cart", ["cost"]),
+  },
   methods: {
-    ...mapActions("Cart", ["resetStateModule"]),
+    ...mapActions("Cart", ["resetCartState"]),
+    ...mapActions("Orders", ["setOrder"]),
     openPopup() {
       this.popup.isOpen = true;
     },
     closePopup() {
       this.popup.isOpen = false;
-      this.resetStateModule();
-      this.$router.push("/");
+      this.resetCartState();
+      if (this.user) {
+        this.$router.push("/orders");
+      } else {
+        this.$router.push("/");
+      }
     },
     makeAnOrder() {
       this.openPopup();
-      console.log("Order", {
-        ...this.contactInfo,
-        pizzas: this.pizzas,
-        misc: this.misc,
+      this.setOrder({
+        order: {
+          ...this.$refs.cartForm.getContactInfo(),
+          pizzas: this.pizzas,
+          misc: this.misc,
+        },
       });
-    },
-  },
-  computed: {
-    ...mapState("Cart", ["misc", "pizzas"]),
-    ...mapState("Auth", ["addresses", "user"]),
-    ...mapGetters("Cart", ["cost"]),
-    deliveryMethods() {
-      let methods = standartDeliveryMethods.slice();
-      if (this.user && this.user.id) {
-        methods = [
-          ...methods,
-          ...this.addresses.filter((adress) => adress.userId === this.user.id),
-        ];
-      }
-      return methods;
     },
   },
 };

@@ -2,6 +2,12 @@ import doughValues from "@/common/enums/doughValues";
 import sizeValues from "@/common/enums/sizeValues";
 import saucesValues from "@/common/enums/saucesValues";
 import ingredientsValues from "@/common/enums/ingredientsValues";
+import resources from "@/common/enums/resources";
+import {
+  AuthApiService,
+  ReadOnlyApiService,
+  CrudApiService,
+} from "@/services/api.service";
 
 export function formatCurrency(value, currency = "RUB") {
   return new Intl.NumberFormat("ru-RU", {
@@ -23,6 +29,38 @@ export function normalizeUser(user) {
   };
 }
 
+export function pizzaPrice({ elId, elDescription }) {
+  let mainCost;
+  let addedCost;
+  let ingredientsPrice = {};
+  const sauce = elDescription.normolizedSauces.find(
+    (sauce) => sauce.id === elId.sauceId
+  );
+  const dough = elDescription.normolizedDought.find(
+    (dough) => dough.id === elId.doughId
+  );
+  const size = elDescription.normolizedSizes.find(
+    (size) => size.id === elId.sizeId
+  );
+
+  mainCost = dough.price + sauce.price;
+
+  elDescription.normolizedIngredients.forEach(
+    (ingredient) =>
+      (ingredientsPrice[ingredient.id] = { price: ingredient.price })
+  );
+  elId.ingredients.forEach(
+    (ingredient) =>
+      (ingredientsPrice[ingredient.ingredientId].quantity = ingredient.quantity)
+  );
+
+  addedCost = Object.values(ingredientsPrice).reduce(
+    (cost, ingredient) => ingredient.price * ingredient.quantity + cost,
+    0
+  );
+  return (mainCost + addedCost) * size.multiplier;
+}
+
 const values = {
   dough: doughValues,
   ingredients: ingredientsValues,
@@ -36,3 +74,21 @@ export function normalize(array, name) {
     value: values[name][item.name],
   }));
 }
+
+export const createResources = () => {
+  return {
+    [resources.AUTH]: new AuthApiService(),
+    [resources.DOUGH]: new ReadOnlyApiService(resources.DOUGH),
+    [resources.INGREDIENTS]: new ReadOnlyApiService(resources.INGREDIENTS),
+    [resources.MISC]: new ReadOnlyApiService(resources.MISC),
+    [resources.SAUCES]: new ReadOnlyApiService(resources.SAUCES),
+    [resources.SIZES]: new ReadOnlyApiService(resources.SIZES),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS),
+  };
+};
+
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+};

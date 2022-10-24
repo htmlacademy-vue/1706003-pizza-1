@@ -4,14 +4,9 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select name="сomment" class="select" @change="changeDeliveryMethod">
-          <option
-            v-for="method in deliveryMethods"
-            :key="method.id"
-            :value="method.id"
-            :selected="method.id === selectedDeliveryMethod.id"
-          >
-            {{ method.name }}
+        <select name="сomment" class="select" v-model="selectedAddress">
+          <option v-for="adress in addresses" :key="adress.id" :value="adress">
+            {{ adress.name }}
           </option>
         </select>
       </label>
@@ -23,12 +18,11 @@
           name="tel"
           placeholder="+7 999-999-99-99"
           required
-          @input="changePhone"
-          :value="phone"
+          v-model="phone"
         />
       </label>
 
-      <div class="cart-form__address">
+      <div class="cart-form__address" v-if="selectedAddress.id !== 'default_0'">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -38,9 +32,8 @@
               type="text"
               name="street"
               required
-              @input="changeStreet"
-              :value="selectedDeliveryMethod.street || street"
-              :disabled="selectedDeliveryMethod.street"
+              v-model="selectedAddress.street"
+              :disabled="selectedAddress.id !== 'default_1'"
             />
           </label>
         </div>
@@ -52,9 +45,8 @@
               type="text"
               name="house"
               required
-              @input="changeBuilding"
-              :value="selectedDeliveryMethod.building || building"
-              :disabled="selectedDeliveryMethod.building"
+              v-model="selectedAddress.building"
+              :disabled="selectedAddress.id !== 'default_1'"
             />
           </label>
         </div>
@@ -65,9 +57,8 @@
             <input
               type="text"
               name="apartment"
-              @input="changeFlat"
-              :value="selectedDeliveryMethod.flat || flat"
-              :disabled="selectedDeliveryMethod.flat"
+              v-model="selectedAddress.flat"
+              :disabled="selectedAddress.id !== 'default_1'"
             />
           </label>
         </div>
@@ -77,52 +68,64 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+import pick from "lodash/pick";
+
+const defautltAdresses = [
+  {
+    id: "default_0",
+    name: "Получу сам",
+  },
+  {
+    id: "default_1",
+    name: "Новый адрес",
+    street: "",
+    building: "",
+    flat: "",
+    comment: "",
+  },
+];
+
 export default {
   name: "CartForm",
-  props: {
-    deliveryMethods: {
-      type: Array,
-      required: true,
-    },
-    selectedDeliveryMethod: {
-      type: Object,
-      required: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
-    street: {
-      type: String,
-      required: true,
-    },
-    building: {
-      type: String,
-      required: true,
-    },
-    flat: {
-      type: String,
-      required: true,
+  data() {
+    return {
+      phone: "",
+      selectedAddress: defautltAdresses[0],
+    };
+  },
+  computed: {
+    ...mapState("Auth", { userAdresses: "addresses" }),
+    addresses() {
+      return [...defautltAdresses, ...this.userAdresses];
     },
   },
   methods: {
-    changeDeliveryMethod(event) {
-      const selectedDeliveryMethod = this.deliveryMethods.find(
-        (method) => method.id === Number(event.target.value)
-      );
-      this.$emit("update:selectedDeliveryMethod", selectedDeliveryMethod);
-    },
-    changePhone(event) {
-      this.$emit("update:phone", event.target.value);
-    },
-    changeStreet(event) {
-      this.$emit("update:street", event.target.value);
-    },
-    changeBuilding(event) {
-      this.$emit("update:building", event.target.value);
-    },
-    changeFlat(event) {
-      this.$emit("update:flat", event.target.value);
+    getContactInfo() {
+      let address = null;
+      const userId = this.$store.state.Auth.user?.id || null;
+
+      if (this.selectedAddress.id === defautltAdresses[1].id) {
+        address = pick(this.selectedAddress, [
+          "street",
+          "building",
+          "flat",
+          "comment",
+        ]);
+      }
+      if (
+        this.selectedAddress.id !== defautltAdresses[0].id &&
+        this.selectedAddress.id !== defautltAdresses[1].id
+      ) {
+        address = pick(this.selectedAddress, ["id"]);
+      }
+
+      return {
+        userId,
+        address,
+        phone: this.phone,
+      };
     },
   },
 };

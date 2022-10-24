@@ -1,16 +1,16 @@
 <template>
   <ul class="cart-list">
     <CartListItem
-      v-for="pizza in pizzas"
-      :key="pizza.id"
+      v-for="(pizza, index) in pizzas"
+      :key="index"
       :name="pizza.name"
       :doughId="pizza.doughId"
       :sauceId="pizza.sauceId"
       :sizeId="pizza.sizeId"
       :ingredientsId="pizza.ingredients"
       :quantity="pizza.quantity"
-      @changeQty="changePizzaQty({ id: pizza.id, qty: $event })"
-      @changePizza="changePizza(pizza.id)"
+      @changeQty="changePizzaQty({ index, quantity: $event })"
+      @changePizza="changePizza(index)"
     />
   </ul>
 </template>
@@ -27,10 +27,12 @@ export default {
     ...mapState("Cart", ["pizzas"]),
   },
   methods: {
-    ...mapActions("Cart", ["changePizzaQty"]),
-    ...mapActions("Builder", ["getPizzaInOrder"]),
-    changePizza(id) {
-      this.getPizzaInOrder({ id });
+    ...mapActions("Cart", ["changePizzaQty", "deletePizzaFromCart"]),
+    ...mapActions("Builder", ["setBuilderState"]),
+    changePizza(index) {
+      const pizza = this.pizzas[index];
+      this.setBuilderState({ state: pizza });
+      this.deletePizzaFromCart({ index });
       this.$router.push("/");
     },
   },

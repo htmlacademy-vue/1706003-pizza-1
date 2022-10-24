@@ -9,7 +9,9 @@
       </div>
       <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
       <div class="popup__button">
-        <router-link to="#" class="button">Отлично, я жду!</router-link>
+        <a href="#" class="button" @click.prevent="closePopup">
+          Отлично, я жду!
+        </a>
       </div>
     </div>
   </div>

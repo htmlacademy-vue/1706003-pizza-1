@@ -4,11 +4,13 @@
       <CartAdditionalListItem
         v-for="product in misc"
         :key="product.id"
+        :miscId="product.id"
         :name="product.name"
-        :imgSrc="product.image"
-        :quantity="product.quantity"
+        :image="product.image"
         :price="product.price"
-        @changeQty="(qty) => changeMiscQty({ id: product.id, qty })"
+        @changeQty="
+          changeMiscQty({ misc: { miscId: product.id, quantity: $event } })
+        "
       />
     </ul>
   </div>
@@ -23,7 +25,7 @@ export default {
   name: "CartAdditionalList",
   components: { CartAdditionalListItem },
   computed: {
-    ...mapState("Cart", ["misc"]),
+    ...mapState(["misc"]),
   },
   methods: {
     ...mapActions("Cart", ["changeMiscQty"]),

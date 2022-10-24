@@ -11,7 +11,9 @@
             :value="sauce.id"
             :name="'sauce'"
             :checked="selectedSauceId === sauce.id"
-            @change="changeSauceId({ id: sauce.id })"
+            @change="
+              changeBuilderEntity({ entity: 'sauceId', value: sauce.id })
+            "
             class="radio ingredients__input"
           >
             <span>{{ sauce.name }}</span>
@@ -41,7 +43,10 @@
                 :max="3"
                 :counter="ingredientQtyById(ingredient.id)"
                 @changeCounter="
-                  changeIngredientQty({ id: ingredient.id, quantity: $event })
+                  changeIngredientQty({
+                    ingredientId: ingredient.id,
+                    quantity: $event,
+                  })
                 "
                 class="ingredients__counter"
               />
@@ -81,7 +86,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeSauceId", "changeIngredientQty"]),
+    ...mapActions("Builder", ["changeBuilderEntity", "changeIngredientQty"]),
     ingredientQtyById(id) {
       const ingredient = this.selectedIngredients.find(
         (ingredient) => ingredient.ingredientId === id

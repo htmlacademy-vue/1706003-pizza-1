@@ -75,7 +75,10 @@ export default {
       ).quantity;
 
       if (qty <= 2) {
-        this.changeIngredientQty({ id: ingredient.id, quantity: qty + 1 });
+        this.changeIngredientQty({
+          ingredientId: ingredient.id,
+          quantity: qty + 1,
+        });
       }
     },
   },

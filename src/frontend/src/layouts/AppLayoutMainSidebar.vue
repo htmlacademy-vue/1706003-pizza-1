@@ -9,9 +9,14 @@
       />
     </router-link>
 
-    <router-link class="layout__link" to="/orders">История заказов</router-link>
-    <router-link class="layout__link layout__link--active" to="/profile">
-      Мои данные
+    <router-link
+      v-for="(link, index) in links"
+      :key="index"
+      :to="link.to"
+      class="layout__link"
+      :class="{ 'layout__link--active': path === link.to }"
+    >
+      {{ link.text }}
     </router-link>
   </div>
 </template>
@@ -19,5 +24,24 @@
 <script>
 export default {
   name: "AppLayoutMainSidebar",
+  data() {
+    return {
+      links: [
+        {
+          to: "/orders",
+          text: "История заказов",
+        },
+        {
+          to: "/profile",
+          text: "Мои данные",
+        },
+      ],
+    };
+  },
+  computed: {
+    path() {
+      return this.$route.path;
+    },
+  },
 };
 </script>

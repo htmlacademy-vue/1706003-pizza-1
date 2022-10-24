@@ -24,12 +24,13 @@
           <BuilderPizzaView />
 
           <BuilderPriceCounter
-            :price="pizzaPrice"
+            :price="price"
             :disabled="disabledGetPrice"
             @addToOrder="addToOrder"
           />
         </form>
       </div>
+      <router-view />
     </div>
   </main>
 </template>
@@ -60,25 +61,40 @@ export default {
     };
   },
   methods: {
-    ...mapActions("Builder", ["changeName", "resetStateModule"]),
+    ...mapActions("Builder", ["changeBuilderEntity", "resetBuilderState"]),
     ...mapActions("Cart", ["addPizzaToCart", "replacePizzaInCart"]),
     addToOrder() {
-      this.changeName({ name: this.pizza.name });
-      if (this.id) {
-        this.replacePizzaInCart();
-      } else {
-        this.addPizzaToCart();
-      }
+      this.changeBuilderEntity({
+        entity: "name",
+        value: this.pizza.name,
+      });
+      this.addPizzaToCart({
+        pizza: {
+          name: this.name,
+          sauceId: this.sauceId,
+          doughId: this.doughId,
+          sizeId: this.sizeId,
+          quantity: this.quantity,
+          ingredients: this.ingredients,
+        },
+      });
       this.resetBuilder();
     },
     resetBuilder() {
-      this.resetStateModule();
+      this.resetBuilderState();
       this.pizza.name = "";
     },
   },
   computed: {
-    ...mapState("Builder", ["ingredients", "name", "id"]),
-    ...mapGetters("Builder", ["pizzaPrice"]),
+    ...mapState("Builder", [
+      "ingredients",
+      "name",
+      "sauceId",
+      "doughId",
+      "sizeId",
+      "quantity",
+    ]),
+    ...mapGetters("Builder", ["price"]),
     disabledGetPrice() {
       return (
         !this.pizza.name ||
