@@ -2,23 +2,28 @@
   <main class="content">
     <div>
       <div class="content__wrapper">
-        <h1 class="title title--big">Конструктор пиццы</h1>
+        <AppTitle :modifier="['big']">
+          Конструктор пиццы
+        </AppTitle>
         <BuilderDoughSelector />
 
         <BuilderSizeSelector />
 
         <BuilderIngredientsSelector />
 
-        <form class="content__pizza" @submit.prevent>
+        <form
+          class="content__pizza"
+          @submit.prevent
+        >
           <label class="input">
             <span class="visually-hidden">Название пиццы</span>
             <input
+              v-model="pizza.name"
               type="text"
               name="pizza_name"
               placeholder="Введите название пиццы"
-              v-model="pizza.name"
               required
-            />
+            >
           </label>
 
           <BuilderPizzaView />
@@ -43,6 +48,7 @@ import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelecto
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
+import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "IndexHome",
@@ -52,6 +58,7 @@ export default {
     BuilderIngredientsSelector,
     BuilderPriceCounter,
     BuilderPizzaView,
+    AppTitle,
   },
   data() {
     return {
@@ -59,6 +66,26 @@ export default {
         name: "",
       },
     };
+  },
+  computed: {
+    ...mapState("Builder", [
+      "ingredients",
+      "name",
+      "sauceId",
+      "doughId",
+      "sizeId",
+      "quantity",
+    ]),
+    ...mapGetters("Builder", ["price"]),
+    disabledGetPrice() {
+      return (
+        !this.pizza.name ||
+        !this.ingredients.filter((ingredient) => ingredient.quantity).length
+      );
+    },
+  },
+  mounted() {
+    this.pizza.name = this.name;
   },
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity", "resetBuilderState"]),
@@ -85,29 +112,78 @@ export default {
       this.pizza.name = "";
     },
   },
-  computed: {
-    ...mapState("Builder", [
-      "ingredients",
-      "name",
-      "sauceId",
-      "doughId",
-      "sizeId",
-      "quantity",
-    ]),
-    ...mapGetters("Builder", ["price"]),
-    disabledGetPrice() {
-      return (
-        !this.pizza.name ||
-        !this.ingredients.filter((ingredient) => ingredient.quantity).length
-      );
-    },
-  },
-  mounted() {
-    this.pizza.name = this.name;
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/scss/layout/content.scss";
+.content__wrapper {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  width: 920px;
+  margin: 0 auto;
+}
+
+.content__pizza {
+  width: 373px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.input {
+  display: block;
+
+  span {
+    @include r-s14-h16;
+
+    display: block;
+
+    margin-bottom: 4px;
+  }
+
+  input {
+    @include r-s16-h19;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+
+    transition: 0.3s;
+
+    color: $black;
+    border: 1px solid $purple-400;
+    border-radius: 8px;
+    outline: none;
+    background-color: $white;
+
+    font-family: inherit;
+
+    &:focus {
+      border-color: $green-500;
+    }
+  }
+
+  &:hover {
+    input {
+      border-color: $black;
+    }
+  }
+
+  &--big-label {
+    display: flex;
+    align-items: center;
+
+    span {
+      @include b-s16-h19;
+
+      margin-right: 16px;
+
+      white-space: nowrap;
+    }
+  }
+}
 </style>

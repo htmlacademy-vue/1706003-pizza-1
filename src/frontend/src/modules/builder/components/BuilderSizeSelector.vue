@@ -1,23 +1,26 @@
 <template>
-  <div class="content__diameter">
-    <ContentSheet :contentClasses="['diameter']">
-      <template #title>Выберите размер</template>
-      <template #content>
-        <RadioButton
-          v-for="size in normolizedSizes"
-          :key="size.id"
-          :value="size.id"
-          :name="'size'"
-          :checked="selectedSizeId === size.id"
-          @change="changeBuilderEntity({ entity: 'sizeId', value: size.id })"
-          class="diameter__input"
-          :class="`diameter__input--${size.value}`"
-        >
-          <span>{{ size.name }}</span>
-        </RadioButton>
-      </template>
-    </ContentSheet>
-  </div>
+  <ContentSheet
+    :content-classes="['diameter']"
+    class="content__diameter"
+  >
+    <template #title>
+      Выберите размер
+    </template>
+    <template #content>
+      <RadioButton
+        v-for="size in normolizedSizes"
+        :key="size.sizeId"
+        :value="size.sizeId"
+        :name="'size'"
+        :checked="selectedSizeId === size.sizeId"
+        class="diameter__input"
+        :class="`diameter__input--${size.value}`"
+        @change="changeBuilderEntity({ entity: 'sizeId', value: size.sizeId })"
+      >
+        <span>{{ size.name }}</span>
+      </RadioButton>
+    </template>
+  </ContentSheet>
 </template>
 
 <script>

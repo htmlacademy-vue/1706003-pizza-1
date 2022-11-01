@@ -79,15 +79,17 @@ export default new Vuex.Store({
     },
     async fetchDough({ commit }) {
       const dough = await this.$api.dough.query();
+      dough.forEach((item) => {delete Object.assign(item, {['doughId']: item['id'] })['id'];});
       commit("SET_ENTITY", { module: null, entity: "dough", value: dough });
       commit("SET_ENTITY", {
         module: "Builder",
         entity: "doughId",
-        value: dough[0].id,
+        value: dough[0].doughId,
       });
     },
     async fetchIngredients({ commit }) {
       const ingredients = await this.$api.ingredients.query();
+      ingredients.forEach((item) => {delete Object.assign(item, {['ingredientId']: item['id'] })['id'];});
       commit("SET_ENTITY", {
         module: null,
         entity: "ingredients",
@@ -97,22 +99,24 @@ export default new Vuex.Store({
         module: "Builder",
         entity: "ingredients",
         value: ingredients.map((ingredient) => ({
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.ingredientId,
           quantity: 0,
         })),
       });
     },
     async fetchSauces({ commit }) {
       const sauces = await this.$api.sauces.query();
+      sauces.forEach((item) => {delete Object.assign(item, {['sauceId']: item['id'] })['id'];});
       commit("SET_ENTITY", { module: null, entity: "sauces", value: sauces });
       commit("SET_ENTITY", {
         module: "Builder",
         entity: "sauceId",
-        value: sauces[0].id,
+        value: sauces[0].sauceId,
       });
     },
     async fetchSizes({ commit }) {
       const sizes = await this.$api.sizes.query();
+      sizes.forEach((item) => {delete Object.assign(item, {['sizeId']: item['id'] })['id'];});
       sizes.sort(
         (prevSize, nextSize) => prevSize.multiplier - nextSize.multiplier
       );
@@ -120,17 +124,18 @@ export default new Vuex.Store({
       commit("SET_ENTITY", {
         module: "Builder",
         entity: "sizeId",
-        value: sizes[0].id,
+        value: sizes[0].sizeId,
       });
     },
     async fetchMisc({ commit }) {
       const misc = await this.$api.misc.query();
+      misc.forEach((item) => {delete Object.assign(item, {['miscId']: item['id'] })['id'];});
       commit("SET_ENTITY", { module: null, entity: "misc", value: misc });
       commit("SET_ENTITY", {
         module: "Cart",
         entity: "misc",
         value: misc.map((misc) => ({
-          miscId: misc.id,
+          miscId: misc.miscId,
           quantity: 0,
         })),
       });

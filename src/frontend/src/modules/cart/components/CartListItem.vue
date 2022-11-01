@@ -1,29 +1,20 @@
 <template>
   <li class="cart-list__item">
-    <div class="product cart-list__product">
-      <img
-        src="@/assets/img/product.svg"
-        class="product__img"
-        width="56"
-        height="56"
-        :alt="name"
-      />
-      <div class="product__text">
-        <h2>{{ name }}</h2>
-        <ul>
-          <li>{{ size.name }}, {{ dough.name }} тесто</li>
-          <li>Соус: {{ sauce.name }}</li>
-          <li>Начинка: {{ ingredientsNames }}</li>
-        </ul>
-      </div>
-    </div>
+    <AppProduct
+      :name="name"
+      :size="size.name"
+      :dough="dough.name.toLowerCase()"
+      :sauce="sauce.name"
+      :ingredients="ingredientsNames"
+      class="cart-list__product"
+    />
 
     <ItemCounter
       :min="0"
       :counter="quantity"
-      :buttonColor="'orange'"
-      @changeCounter="changeQty"
+      :button-color="'orange'"
       class="cart-list__counter"
+      @changeCounter="changeQty"
     />
 
     <div class="cart-list__price">
@@ -31,7 +22,11 @@
     </div>
 
     <div class="cart-list__button">
-      <button type="button" class="cart-list__edit" @click="changePizza">
+      <button
+        type="button"
+        class="cart-list__edit"
+        @click="changePizza"
+      >
         Изменить
       </button>
     </div>
@@ -42,12 +37,13 @@
 import { mapGetters } from "vuex";
 
 import ItemCounter from "@/common/components/ItemCounter.vue";
+import AppProduct from "@/common/components/AppProduct.vue";
 
 import { formatCurrency } from "@/common/helpers.js";
 
 export default {
   name: "CartListItem",
-  components: { ItemCounter },
+  components: { ItemCounter, AppProduct },
   props: {
     name: {
       type: String,
@@ -55,15 +51,15 @@ export default {
     },
     doughId: {
       type: Number,
-      requred: true,
+      required: true,
     },
     sauceId: {
       type: Number,
-      requred: true,
+      required: true,
     },
     sizeId: {
       type: Number,
-      requred: true,
+      required: true,
     },
     ingredientsId: {
       type: Array,
@@ -71,7 +67,7 @@ export default {
     },
     quantity: {
       type: Number,
-      requred: true,
+      required: true,
     },
   },
   computed: {
@@ -82,25 +78,19 @@ export default {
       "normolizedSizes",
     ]),
     dough() {
-      return this.normolizedDought.find((dough) => dough.id === this.doughId);
+      return this.normolizedDought.find((dough) => dough.doughId === this.doughId);
     },
     sauce() {
-      return this.normolizedSauces.find((sauce) => sauce.id === this.sauceId);
+      return this.normolizedSauces.find((sauce) => sauce.sauceId === this.sauceId);
     },
     size() {
-      return this.normolizedSizes.find((size) => size.id === this.sizeId);
+      return this.normolizedSizes.find((size) => size.sizeId === this.sizeId);
     },
     ingredients() {
-      let ingredientsObj = {};
-      this.normolizedIngredients.forEach(
-        (ingredient) => (ingredientsObj[ingredient.id] = { ...ingredient })
-      );
-      this.ingredientsId.forEach(
-        (ingredient) =>
-          (ingredientsObj[ingredient.ingredientId].quantity =
-            ingredient.quantity)
-      );
-      return Object.values(ingredientsObj);
+      return this.normolizedIngredients.map((ingredient) => ({
+        ...ingredient,
+        quantity: this.ingredientsId.find((id) => id.ingredientId === ingredient.ingredientId).quantity,
+      }));
     },
     multiplier() {
       return this.size.multiplier;

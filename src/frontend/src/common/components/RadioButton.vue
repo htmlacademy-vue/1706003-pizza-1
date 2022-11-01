@@ -5,10 +5,10 @@
       :name="name"
       :value="value"
       :checked="checked"
-      @change="$emit('change', $event.target.value)"
       class="visually-hidden"
-    />
-    <slot></slot>
+      @change="$emit('change', $event.target.value)"
+    >
+    <slot />
   </label>
 </template>
 

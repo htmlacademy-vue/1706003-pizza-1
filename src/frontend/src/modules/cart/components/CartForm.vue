@@ -1,67 +1,76 @@
 <template>
-  <div class="cart__form">
-    <div class="cart-form">
-      <label class="cart-form__select">
-        <span class="cart-form__label">Получение заказа:</span>
+  <div class="cart-form">
+    <label class="cart-form__select">
+      <span class="cart-form__label">Получение заказа:</span>
 
-        <select name="сomment" class="select" v-model="selectedAddress">
-          <option v-for="adress in addresses" :key="adress.id" :value="adress">
-            {{ adress.name }}
-          </option>
-        </select>
-      </label>
+      <select
+        v-model="selectedAddress"
+        name="сomment"
+        class="select"
+      >
+        <option
+          v-for="adress in addresses"
+          :key="adress.id"
+          :value="adress"
+        >
+          {{ adress.name }}
+        </option>
+      </select>
+    </label>
 
-      <label class="input input--big-label">
-        <span>Контактный телефон:</span>
-        <input
-          type="tel"
-          name="tel"
-          placeholder="+7 999-999-99-99"
-          required
-          v-model="phone"
-        />
-      </label>
+    <label class="input input--big-label">
+      <span>Контактный телефон:</span>
+      <input
+        v-model="phone"
+        type="tel"
+        name="tel"
+        placeholder="+7 999-999-99-99"
+        required
+      >
+    </label>
 
-      <div class="cart-form__address" v-if="selectedAddress.id !== 'default_0'">
-        <span class="cart-form__label">Новый адрес:</span>
+    <div
+      v-if="selectedAddress.id !== 'default_0'"
+      class="cart-form__address"
+    >
+      <span class="cart-form__label">Новый адрес:</span>
 
-        <div class="cart-form__input">
-          <label class="input">
-            <span>Улица*</span>
-            <input
-              type="text"
-              name="street"
-              required
-              v-model="selectedAddress.street"
-              :disabled="selectedAddress.id !== 'default_1'"
-            />
-          </label>
-        </div>
+      <div class="cart-form__input">
+        <label class="input">
+          <span>Улица*</span>
+          <input
+            v-model="selectedAddress.street"
+            type="text"
+            name="street"
+            required
+            :disabled="selectedAddress.id !== 'default_1'"
+          >
+        </label>
+      </div>
 
-        <div class="cart-form__input cart-form__input--small">
-          <label class="input">
-            <span>Дом*</span>
-            <input
-              type="text"
-              name="house"
-              required
-              v-model="selectedAddress.building"
-              :disabled="selectedAddress.id !== 'default_1'"
-            />
-          </label>
-        </div>
+      <div class="cart-form__input cart-form__input--small">
+        <label class="input">
+          <span>Дом*</span>
+          <input
+            v-model="selectedAddress.building"
+            type="text"
+            name="house"
+            required
+            :disabled="selectedAddress.id !== 'default_1'"
+          >
+        </label>
+      </div>
 
-        <div class="cart-form__input cart-form__input--small">
-          <label class="input">
-            <span>Квартира</span>
-            <input
-              type="text"
-              name="apartment"
-              v-model="selectedAddress.flat"
-              :disabled="selectedAddress.id !== 'default_1'"
-            />
-          </label>
-        </div>
+      <div class="cart-form__input cart-form__input--small">
+        <label class="input">
+          <span>Квартира</span>
+          <input
+            v-model="selectedAddress.flat"
+            type="text"
+            name="apartment"
+            :disabled="selectedAddress.id !== 'default_1'"
+          >
+        </label>
       </div>
     </div>
   </div>
@@ -171,6 +180,94 @@ export default {
 
   &--small {
     max-width: 120px;
+  }
+}
+.select {
+  @include r-s16-h19;
+
+  display: block;
+
+  margin: 0;
+  padding: 8px 16px;
+  padding-right: 30px;
+
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: $black;
+  border: 1px solid $purple-400;
+  border-radius: 8px;
+  outline: none;
+  background-color: $silver-100;
+  background-image: url("~@/assets/img/select.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+
+  font-family: inherit;
+
+  appearance: none;
+
+  &:hover {
+    border-color: $orange-100;
+  }
+
+  &:focus {
+    border-color: $green-500;
+  }
+}
+.input {
+  display: block;
+
+  span {
+    @include r-s14-h16;
+
+    display: block;
+
+    margin-bottom: 4px;
+  }
+
+  input {
+    @include r-s16-h19;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+
+    transition: 0.3s;
+
+    color: $black;
+    border: 1px solid $purple-400;
+    border-radius: 8px;
+    outline: none;
+    background-color: $white;
+
+    font-family: inherit;
+
+    &:focus {
+      border-color: $green-500;
+    }
+  }
+
+  &:hover {
+    input {
+      border-color: $black;
+    }
+  }
+
+  &--big-label {
+    display: flex;
+    align-items: center;
+
+    span {
+      @include b-s16-h19;
+
+      margin-right: 16px;
+
+      white-space: nowrap;
+    }
   }
 }
 </style>

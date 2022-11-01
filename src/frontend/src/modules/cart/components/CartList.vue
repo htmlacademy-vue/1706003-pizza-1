@@ -1,13 +1,13 @@
 <template>
-  <ul class="cart-list">
+  <ul class="cart-list sheet">
     <CartListItem
       v-for="(pizza, index) in pizzas"
       :key="index"
       :name="pizza.name"
-      :doughId="pizza.doughId"
-      :sauceId="pizza.sauceId"
-      :sizeId="pizza.sizeId"
-      :ingredientsId="pizza.ingredients"
+      :dough-id="pizza.doughId"
+      :sauce-id="pizza.sauceId"
+      :size-id="pizza.sizeId"
+      :ingredients-id="pizza.ingredients"
       :quantity="pizza.quantity"
       @changeQty="changePizzaQty({ index, quantity: $event })"
       @changePizza="changePizza(index)"

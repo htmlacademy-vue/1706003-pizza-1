@@ -1,25 +1,34 @@
 <template>
   <div class="modal">
     <div class="popup">
-      <div class="close" @click="closePopup">
+      <AppClose @click="closePopup">
         <span class="visually-hidden">Закрыть попап</span>
-      </div>
+      </AppClose>
       <div class="popup__title">
-        <h2 class="title">Спасибо за заказ</h2>
+        <h2 class="title">
+          Спасибо за заказ
+        </h2>
       </div>
       <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
       <div class="popup__button">
-        <a href="#" class="button" @click.prevent="closePopup">
+        <AppButton
+          class="button"
+          @click="closePopup"
+        >
           Отлично, я жду!
-        </a>
+        </AppButton>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import AppClose from "@/common/components/AppClose.vue";
+import AppButton from "@/common/components/AppButton.vue";
+
 export default {
   name: "CartPopup",
+  components: { AppClose, AppButton },
   methods: {
     closePopup() {
       this.$emit("closePopup");
@@ -91,10 +100,19 @@ export default {
   text-align: center;
 
   font-size: 1.3em;
+  .title {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+
+    color: $black;
+  }
 }
 
 .popup__button {
-  button {
+  display: flex;
+  justify-content: center;
+  .button {
     padding: 16px 32px;
   }
 }

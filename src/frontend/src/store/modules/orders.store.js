@@ -19,7 +19,7 @@ export default {
           orderMisc: order.orderMisc.map((misc) => ({
             ...misc,
             cost:
-              rootState.misc.find((item) => item.id === misc.miscId).price *
+              rootState.misc.find((item) => item.miscId === misc.miscId).price *
               misc.quantity,
           })),
         }))
@@ -34,6 +34,7 @@ export default {
   actions: {
     async getOrders({ commit }) {
       const orders = await this.$api.orders.query();
+      orders.forEach((item) => {delete Object.assign(item, {['orderId']: item['id'] })['id'];});
       commit(
         "SET_ENTITY",
         {
@@ -44,12 +45,14 @@ export default {
         { root: true }
       );
     },
-    async setOrder({ dispatch }, { order }) {
+    async setOrder({ dispatch, rootState }, { order }) {
       await this.$api.orders.post(order);
-      await dispatch("getOrders");
+      if (rootState.Auth.user) {
+        await dispatch("getOrders");
+      }
     },
-    async deleteOrder({ dispatch }, { id }) {
-      await this.$api.orders.delete(id);
+    async deleteOrder({ dispatch }, { orderId }) {
+      await this.$api.orders.delete(orderId);
       await dispatch("getOrders");
     },
   },

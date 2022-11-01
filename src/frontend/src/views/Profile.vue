@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">Мои данные</h1>
+      <AppTitle :modifier="['big']">
+        Мои данные
+      </AppTitle>
     </div>
 
     <ProfileUser />
@@ -9,28 +11,32 @@
     <div class="layout__address">
       <ProfileAddressContainer
         v-for="address in addresses"
-        :key="address.id"
+        :key="address.addressId"
         :title="address.name"
-        :addressId="address.id"
+        :address-id="address.addressId"
       />
     </div>
 
-    <div class="layout__address" v-if="isAddingNewAddress">
+    <div
+      v-if="isAddingNewAddress"
+      class="layout__address"
+    >
       <ProfileAddressForm
-        :newAddress="true"
+        :new-address="true"
         title="Новый адрес"
         @setAddressInfo="setNewAddress"
       />
     </div>
 
     <div class="layout__button">
-      <button
+      <AppButton
         type="button"
-        class="button button--border"
+        class="button"
+        :modifier="['secondary']"
         @click="addNewAddress"
       >
         Добавить новый адрес
-      </button>
+      </AppButton>
     </div>
   </div>
 </template>
@@ -42,9 +48,18 @@ import ProfileUser from "@/modules/profile/ProfileUser.vue";
 import ProfileAddressForm from "@/modules/profile/ProfileAddressForm.vue";
 import ProfileAddressContainer from "@/modules/profile/ProfileAddressContainer.vue";
 
+import AppButton from "@/common/components/AppButton.vue";
+import AppTitle from "@/common/components/AppTitle.vue";
+
 export default {
   name: "Profile",
-  components: { ProfileUser, ProfileAddressForm, ProfileAddressContainer },
+  components: {
+    ProfileUser,
+    ProfileAddressForm,
+    ProfileAddressContainer,
+    AppButton,
+    AppTitle 
+  },
   data() {
     return {
       isAddingNewAddress: false,
@@ -76,7 +91,7 @@ export default {
 .layout__button {
   margin-top: 40px;
 
-  button {
+  .button {
     padding: 12px 23px;
   }
 }

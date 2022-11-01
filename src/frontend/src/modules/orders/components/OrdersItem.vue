@@ -2,7 +2,7 @@
   <section class="sheet order">
     <div class="order__wrapper">
       <div class="order__number">
-        <b>Заказ #{{ id }}</b>
+        <b>Заказ #{{ orderId }}</b>
       </div>
 
       <div class="order__sum">
@@ -10,18 +10,23 @@
       </div>
 
       <div class="order__button">
-        <button
+        <AppButton
           type="button"
-          class="button button--border"
-          @click="deleteOrder({ id })"
+          class="button"
+          :modifier="['secondary']"
+          @click="deleteOrder({ orderId })"
         >
           Удалить
-        </button>
+        </AppButton>
       </div>
       <div class="order__button">
-        <button type="button" class="button" @click="repeatOrder({ id })">
+        <AppButton
+          type="button"
+          class="button"
+          @click="repeatOrder({ orderId })"
+        >
           Повторить
-        </button>
+        </AppButton>
       </div>
     </div>
 
@@ -29,7 +34,9 @@
 
     <OrdersAdditionalList :misc="misc" />
 
-    <p class="order__address">Адрес доставки: {{ address }}</p>
+    <p class="order__address">
+      {{ address ? `Адрес доставки: ${address}` : "Самовывоз" }}
+    </p>
   </section>
 </template>
 
@@ -43,48 +50,25 @@ import omit from "lodash/omit";
 import OrdersAdditionalList from "@/modules/orders/components/OrdersAdditionalList.vue";
 import OrdersList from "@/modules/orders/components/OrdersList.vue";
 
+import AppButton from "@/common/components/AppButton.vue";
+
 export default {
   name: "OrdersItem",
-  components: { OrdersAdditionalList, OrdersList },
+  components: { OrdersAdditionalList, OrdersList, AppButton },
   props: {
-    id: {
+    orderId: {
       type: Number,
       required: true,
-    },
-  },
-  methods: {
-    ...mapActions("Orders", ["deleteOrder"]),
-    ...mapActions("Cart", [
-      "resetCartState",
-      "addPizzaToCart",
-      "changeMiscQty",
-    ]),
-    repeatOrder({ id }) {
-      this.resetCartState();
-      const pizzas = this.orders
-        .find((order) => order.id === id)
-        .orderPizzas.map((pizza) => ({ ...pizza, id: pizza.orderId }));
-      const misc = this.orders
-        .find((order) => order.id === id)
-        .orderMisc.map((misc) => ({ ...misc, id: misc.orderId }));
-
-      pizzas.forEach((pizza) => {
-        this.addPizzaToCart({ pizza: omit(pizza, ["orderId"]) });
-      });
-      misc.forEach((misc) => {
-        this.changeMiscQty({ misc: omit(misc, ["orderId"]) });
-      });
-      this.$router.push("/cart");
     },
   },
   computed: {
     ...mapGetters("Orders", ["formattedOrders"]),
     ...mapState("Orders", ["orders"]),
     order() {
-      return this.formattedOrders.find((order) => order.id === this.id);
+      return this.formattedOrders.find((order) => order.orderId === this.orderId);
     },
     address() {
-      return this.order.orderAddress.name;
+      return this.order.orderAddress?.name || null;
     },
     pizzas() {
       return this.order.orderPizzas;
@@ -94,6 +78,31 @@ export default {
     },
     cost() {
       return formatCurrency(this.order.cost);
+    },
+  },
+  methods: {
+    ...mapActions("Orders", ["deleteOrder"]),
+    ...mapActions("Cart", [
+      "resetCartState",
+      "addPizzaToCart",
+      "changeMiscQty",
+    ]),
+    repeatOrder({ orderId }) {
+      this.resetCartState();
+      const pizzas = this.orders
+        .find((order) => order.orderId === orderId)
+        .orderPizzas.map((pizza) => ({ ...pizza, id: pizza.pizzaId }));
+      const misc = this.orders
+        .find((order) => order.orderId === orderId)
+        .orderMisc.map((misc) => ({ ...misc, miscId: misc.miscId }));
+
+      pizzas.forEach((pizza) => {
+        this.addPizzaToCart({ pizza: omit(pizza, ["orderId"]) });
+      });
+      misc.forEach((misc) => {
+        this.changeMiscQty({ misc: omit(misc, ["orderId"]) });
+      });
+      this.$router.push("/cart");
     },
   },
 };

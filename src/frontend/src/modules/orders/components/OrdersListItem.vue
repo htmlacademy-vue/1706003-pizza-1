@@ -1,24 +1,16 @@
 <template>
   <li class="order__item">
-    <div class="product">
-      <img
-        src="@/assets/img/product.svg"
-        class="product__img"
-        width="56"
-        height="56"
-        :alt="name"
-      />
-      <div class="product__text">
-        <h2>{{ name }}</h2>
-        <ul>
-          <li>{{ size }}, на тонком тесте</li>
-          <li>Соус: {{ sauce }}</li>
-          <li>Начинка: {{ formatedIngredients }}</li>
-        </ul>
-      </div>
-    </div>
+    <AppProduct
+      :name="name"
+      :size="size"
+      :dough="doughName"
+      :sauce="sauce"
+      :ingredients="formatedIngredients"
+    />
 
-    <p class="order__price">{{ `${quantity}x${formatedPrice}` }}</p>
+    <p class="order__price">
+      {{ `${quantity}x${formatedPrice}` }}
+    </p>
   </li>
 </template>
 
@@ -27,8 +19,12 @@ import { mapState } from "vuex";
 
 import { formatCurrency } from "@/common/helpers.js";
 
+import AppProduct from "@/common/components/AppProduct.vue";
+
+
 export default {
   name: "OrdersListItem",
+  components: { AppProduct },
   props: {
     pizza: {
       type: Object,
@@ -36,7 +32,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["sauces", "sizes", "ingredients"]),
+    ...mapState(["sauces", "sizes", "ingredients", "dough"]),
     name() {
       return this.pizza.name;
     },
@@ -45,11 +41,16 @@ export default {
     },
     sauce() {
       return this.sauces
-        .find((sauce) => sauce.id === this.pizza.sauceId)
+        .find((sauce) => sauce.sauceId === this.pizza.sauceId)
         .name.toLowerCase();
     },
     size() {
-      return this.sizes.find((size) => size.id === this.pizza.sizeId).name;
+      return this.sizes.find((size) => size.sizeId === this.pizza.sizeId).name;
+    },
+    doughName() {
+      return this.dough
+        .find((dough) => dough.doughId === this.pizza.doughId)
+        .name.toLowerCase();
     },
     formatedIngredients() {
       const ingredientsName = [];
@@ -58,7 +59,7 @@ export default {
       );
       ingredients.forEach((ingredient) =>
         ingredientsName.push(
-          this.ingredients.find((item) => item.id === ingredient.ingredientId)
+          this.ingredients.find((item) => item.ingredientId === ingredient.ingredientId)
             .name
         )
       );
@@ -79,24 +80,18 @@ export default {
   margin-right: 33px;
   margin-bottom: 32px;
 }
-.product {
+.order__item {
   display: flex;
-  align-items: center;
+
+  width: 310px;
+  margin-right: 33px;
+  margin-bottom: 32px;
 }
+.order__price {
+  @include b-s16-h19;
 
-.product__text {
-  margin-left: 15px;
+  margin: 0;
 
-  h2 {
-    @include b-s18-h21;
-
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-
-  ul {
-    @include clear-list;
-    @include l-s11-h13;
-  }
+  white-space: nowrap;
 }
 </style>

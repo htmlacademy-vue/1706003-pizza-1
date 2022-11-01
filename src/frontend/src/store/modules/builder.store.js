@@ -52,12 +52,12 @@ export default {
     resetBuilderState({ dispatch, rootState }) {
       const state = {
         name: "",
-        sauceId: rootState.sauces[0].id,
-        doughId: rootState.dough[0].id,
-        sizeId: rootState.sizes[0].id,
+        sauceId: rootState.sauces[0].sauceId,
+        doughId: rootState.dough[0].doughId,
+        sizeId: rootState.sizes[0].sizeId,
         quantity: 1,
         ingredients: rootState.ingredients.map((ingredient) => ({
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.ingredientId,
           quantity: 0,
         })),
       };
@@ -66,6 +66,8 @@ export default {
   },
   getters: {
     price(state, getters, rootState, rootGetters) {
+      console.log("state", state);
+      console.log("rootGetters", rootGetters);
       return pizzaPrice({ elId: state, elDescription: rootGetters });
     },
   },

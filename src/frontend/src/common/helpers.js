@@ -34,20 +34,20 @@ export function pizzaPrice({ elId, elDescription }) {
   let addedCost;
   let ingredientsPrice = {};
   const sauce = elDescription.normolizedSauces.find(
-    (sauce) => sauce.id === elId.sauceId
+    (sauce) => sauce.sauceId === elId.sauceId
   );
   const dough = elDescription.normolizedDought.find(
-    (dough) => dough.id === elId.doughId
+    (dough) => dough.doughId === elId.doughId
   );
   const size = elDescription.normolizedSizes.find(
-    (size) => size.id === elId.sizeId
+    (size) => size.sizeId === elId.sizeId
   );
 
   mainCost = dough.price + sauce.price;
 
   elDescription.normolizedIngredients.forEach(
     (ingredient) =>
-      (ingredientsPrice[ingredient.id] = { price: ingredient.price })
+      (ingredientsPrice[ingredient.ingredientId] = { price: ingredient.price })
   );
   elId.ingredients.forEach(
     (ingredient) =>
