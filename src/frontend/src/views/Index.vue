@@ -191,7 +191,6 @@ export default {
     }
   }
 }
-
 .show-enter-active,
 .show-leave-active {
   transition: all 0.5s ease;
@@ -200,4 +199,5 @@ export default {
 .show-leave-to {
   opacity: 0;
 }
+// Не могу понять почему анимация при закрытии модального окна не работает
 </style>
