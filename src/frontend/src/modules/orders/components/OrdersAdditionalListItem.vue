@@ -1,6 +1,11 @@
 <template>
-  <li>
-    <img :src="miscItem.image" width="20" height="30" :alt="miscItem.name" />
+  <li class="additional__item">
+    <img
+      :src="miscItem.image"
+      width="20"
+      height="30"
+      :alt="miscItem.name"
+    >
     <p>
       <span>{{ miscItem.name }}</span>
       <b>{{ `${quantity}x${formatedPrice}` }}</b>
@@ -16,7 +21,7 @@ import { formatCurrency } from "@/common/helpers.js";
 export default {
   name: "OrdersAdditionalListItem",
   props: {
-    id: {
+    miscId: {
       type: Number,
       required: true,
     },
@@ -28,7 +33,7 @@ export default {
   computed: {
     ...mapState(["misc"]),
     miscItem() {
-      return this.misc.find((item) => item.id === this.id);
+      return this.misc.find((item) => item.miscId === this.miscId);
     },
     formatedPrice() {
       return formatCurrency(this.miscItem.price);
@@ -36,3 +41,27 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .additional__item {
+    @include b-s11-h16;
+
+    width: 130px;
+    margin-right: 24px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img {
+    float: left;
+
+    margin-right: 7px;
+  }
+
+  b {
+    display: block;
+  }
+</style>

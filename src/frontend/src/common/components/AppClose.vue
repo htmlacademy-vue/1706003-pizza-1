@@ -1,3 +1,24 @@
+<template>
+  <div
+    class="close"
+    :class="{'close--white': modifier === 'white'}"
+    v-on="$listeners"
+  />
+</template>
+
+<script>
+export default {
+  name: "AppClose",
+  props: {
+    modifier: {
+      type: String,
+      default: "primary"
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
 .close {
   position: absolute;
   top: 16px;
@@ -59,3 +80,4 @@
     }
   }
 }
+</style>>

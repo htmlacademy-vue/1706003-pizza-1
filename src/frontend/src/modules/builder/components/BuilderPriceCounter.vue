@@ -1,22 +1,26 @@
 <template>
-  <div class="content__result">
-    <p>Итого: {{ formattedPrice }}</p>
-    <button
-      type="button"
+  <div class="result">
+    <p class="text">
+      Итого: {{ formattedPrice }}
+    </p>
+    <AppButton
       class="button"
       :disabled="disabled"
       @click="addToOrder"
     >
       Готовьте!
-    </button>
+    </AppButton>
   </div>
 </template>
 
 <script>
 import { formatCurrency } from "@/common/helpers.js";
 
+import AppButton from "@/common/components/AppButton.vue";
+
 export default {
   name: "BuilderPriceCounter",
+  components: { AppButton },
   props: {
     price: {
       type: Number,
@@ -27,34 +31,34 @@ export default {
       default: false,
     },
   },
-  methods: {
-    addToOrder() {
-      this.$emit("addToOrder");
-    },
-  },
   computed: {
     formattedPrice() {
       return formatCurrency(this.price);
+    },
+  },
+  methods: {
+    addToOrder() {
+      this.$emit("addToOrder");
     },
   },
 };
 </script>
 
 <style lang="scss">
-.content__result {
+.result {
   display: flex;
   align-items: center;
   justify-content: center;
 
   margin-top: 25px;
 
-  p {
+  .text {
     @include b-s24-h28;
 
     margin: 0;
   }
 
-  button {
+  .button {
     margin-left: 12px;
     padding: 16px 45px;
   }

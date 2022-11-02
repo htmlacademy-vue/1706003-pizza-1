@@ -2,7 +2,12 @@
   <li class="additional-list__item sheet">
     <div>
       <p class="additional-list__description">
-        <img :src="image" :alt="name" width="39" height="60" />
+        <img
+          :src="image"
+          :alt="name"
+          width="39"
+          height="60"
+        >
         <span>{{ name }}</span>
       </p>
 
@@ -10,9 +15,9 @@
         <ItemCounter
           :min="0"
           :counter="quantity"
-          :buttonColor="'orange'"
-          @changeCounter="changeQty"
+          :button-color="'orange'"
           class="additional-list__counter"
+          @changeCounter="changeQty"
         />
 
         <div class="additional-list__price">

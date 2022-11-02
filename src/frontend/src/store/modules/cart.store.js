@@ -19,7 +19,7 @@ export default {
     miscCost(state, getters, rootState) {
       return state.misc.reduce(
         (cost, element) =>
-          rootState.misc.find(({ id }) => id === element.miscId).price *
+          rootState.misc.find(({ miscId }) => miscId === element.miscId).price *
             element.quantity +
           cost,
         0
@@ -94,7 +94,7 @@ export default {
           module: "Cart",
           entity: "misc",
           value: rootState.misc.map((misc) => ({
-            miscId: misc.id,
+            miscId: misc.miscId,
             quantity: 0,
           })),
         },

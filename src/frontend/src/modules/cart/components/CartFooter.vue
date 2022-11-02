@@ -1,13 +1,16 @@
 <template>
   <section class="footer">
     <div class="footer__more">
-      <router-link to="/" class="button button--border button--arrow">
+      <AppButtonLink
+        to="/"
+        :modifier="['secondary', 'arrow']"
+      >
         Хочу еще одну
-      </router-link>
+      </AppButtonLink>
     </div>
     <p class="footer__text">
       Перейти к конструктору
-      <br />
+      <br>
       чтоб собрать ещё одну пиццу
     </p>
     <div class="footer__price">
@@ -15,9 +18,13 @@
     </div>
 
     <div class="footer__submit">
-      <button class="button" @click="makeAnOrder" :disabled="!orderCost">
+      <AppButton
+        type="submit"
+        class="button"
+        :disabled="!orderCost"
+      >
         Оформить заказ
-      </button>
+      </AppButton>
     </div>
   </section>
 </template>
@@ -25,17 +32,16 @@
 <script>
 import { formatCurrency } from "@/common/helpers.js";
 
+import AppButton from "@/common/components/AppButton.vue";
+import AppButtonLink from "@/common/components/AppButtonLink.vue";
+
 export default {
   name: "CartFooter",
+  components: { AppButton, AppButtonLink },
   props: {
     orderCost: {
       type: Number,
       required: true,
-    },
-  },
-  methods: {
-    makeAnOrder() {
-      this.$emit("submit");
     },
   },
   computed: {
@@ -48,8 +54,15 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
   display: flex;
   align-items: center;
+
+  box-sizing: border-box;
+  width: 100%;
 
   margin-top: auto;
   padding: 25px 2.12%;
@@ -81,7 +94,7 @@ export default {
 }
 
 .footer__submit {
-  button {
+  .button {
     padding: 16px 14px;
   }
 }

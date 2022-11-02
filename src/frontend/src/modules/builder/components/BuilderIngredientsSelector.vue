@@ -1,61 +1,64 @@
 <template>
-  <div class="content__ingredients">
-    <ContentSheet :contentClasses="['ingredients']">
-      <template #title>Выберите ингредиенты</template>
-      <template #content>
-        <div class="ingredients__sauce">
-          <p>Основной соус:</p>
-          <RadioButton
-            v-for="sauce in normolizedSauces"
-            :key="sauce.id"
-            :value="sauce.id"
-            :name="'sauce'"
-            :checked="selectedSauceId === sauce.id"
-            @change="
-              changeBuilderEntity({ entity: 'sauceId', value: sauce.id })
-            "
-            class="radio ingredients__input"
+  <ContentSheet
+    :content-classes="['ingredients']"
+    class="content__ingredients"
+  >
+    <template #title>
+      Выберите ингредиенты
+    </template>
+    <template #content>
+      <div class="ingredients__sauce">
+        <p>Основной соус:</p>
+        <RadioButton
+          v-for="sauce in normolizedSauces"
+          :key="sauce.sauceId"
+          :value="sauce.sauceId"
+          :name="'sauce'"
+          :checked="selectedSauceId === sauce.sauceId"
+          class="radio ingredients__input"
+          @change="
+            changeBuilderEntity({ entity: 'sauceId', value: sauce.sauceId })
+          "
+        >
+          <span>{{ sauce.name }}</span>
+        </RadioButton>
+      </div>
+
+      <div class="ingredients__filling">
+        <p>Начинка:</p>
+
+        <ul class="ingredients__list">
+          <li
+            v-for="ingredient in normolizedIngredients"
+            :key="ingredient.ingredientId"
+            class="ingredients__item"
           >
-            <span>{{ sauce.name }}</span>
-          </RadioButton>
-        </div>
-
-        <div class="ingredients__filling">
-          <p>Начинка:</p>
-
-          <ul class="ingredients__list">
-            <li
-              v-for="ingredient in normolizedIngredients"
-              :key="ingredient.id"
-              class="ingredients__item"
+            <AppDrag
+              :transfer-data="ingredient"
+              :draggable="ingredientQtyById(ingredient.ingredientId) < 3"
             >
-              <AppDrag
-                :transfer-data="ingredient"
-                :draggable="ingredientQtyById(ingredient.id) < 3"
-              >
-                <SelectorItem
-                  :class="`filling--${ingredient.value}`"
-                  :ingredient="ingredient.name"
-                />
-              </AppDrag>
-              <ItemCounter
-                :min="0"
-                :max="3"
-                :counter="ingredientQtyById(ingredient.id)"
-                @changeCounter="
-                  changeIngredientQty({
-                    ingredientId: ingredient.id,
-                    quantity: $event,
-                  })
-                "
-                class="ingredients__counter"
+              <SelectorItem
+                :class="`filling--${ingredient.value}`"
+                :ingredient="ingredient.name"
               />
-            </li>
-          </ul>
-        </div>
-      </template>
-    </ContentSheet>
-  </div>
+            </AppDrag>
+            <ItemCounter
+              :min="0"
+              :max="3"
+              :counter="ingredientQtyById(ingredient.ingredientId)"
+              class="ingredients__counter"
+              @changeCounter="
+                changeIngredientQty({
+                  ingredientId: ingredient.ingredientId,
+                  quantity: $event,
+                })
+              "
+            />
+          </li>
+        </ul>
+      </div>
+    </template>
+  </ContentSheet>
 </template>
 
 <script>
@@ -156,5 +159,67 @@ export default {
   width: 54px;
   margin-top: 10px;
   margin-left: 36px;
+}
+
+.radio {
+  cursor: pointer;
+
+  span {
+    @include r-s16-h19;
+
+    position: relative;
+
+    padding-left: 28px;
+
+    &:before {
+      @include p_center-v;
+
+      display: block;
+
+      box-sizing: border-box;
+      width: 20px;
+      height: 20px;
+
+      content: "";
+      transition: 0.3s;
+
+      border: 1px solid $purple-400;
+      border-radius: 50%;
+      background-color: $white;
+    }
+  }
+
+  &:hover {
+    input:not(:checked):not(:disabled) + span {
+      &:before {
+        border-color: $purple-800;
+      }
+    }
+  }
+
+  input {
+    display: none;
+
+    &:checked + span {
+      &:before {
+        border: 6px solid $green-500;
+      }
+    }
+
+    &:disabled {
+      & + span {
+        &:before {
+          border-color: $purple-400;
+          background-color: $silver-200;
+        }
+      }
+
+      &:checked + span {
+        &:before {
+          border: 6px solid $purple-400;
+        }
+      }
+    }
+  }
 }
 </style>

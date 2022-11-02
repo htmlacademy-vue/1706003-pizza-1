@@ -1,10 +1,15 @@
 <template>
   <div class="sheet">
     <h2 class="title title--small sheet__title">
-      <slot name="title">Заголовок</slot>
+      <slot name="title">
+        Заголовок
+      </slot>
     </h2>
-    <form class="sheet__content" :class="contentClasses">
-      <slot name="content"></slot>
+    <form
+      class="sheet__content"
+      :class="contentClasses"
+    >
+      <slot name="content" />
     </form>
   </div>
 </template>
@@ -47,6 +52,7 @@ export default {
 
   border-top: 1px solid rgba($green-500, 0.1);
 }
+
 .title {
   box-sizing: border-box;
   width: 100%;

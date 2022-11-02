@@ -1,17 +1,14 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <router-link to="/" class="logo">
-        <img
-          src="@/assets/img/logo.svg"
-          alt="V!U!E! Pizza logo"
-          width="90"
-          height="40"
-        />
+      <router-link to="/">
+        <AppLogo />
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart">{{ formatedCost }}</router-link>
+      <router-link to="/cart">
+        {{ formatedCost }}
+      </router-link>
     </div>
     <div class="header__user">
       <template v-if="isAuthenticated">
@@ -20,22 +17,31 @@
             <source
               type="image/webp"
               :srcset="`${user.avatar.webp} 1x, ${user.avatar.webp2x} 2x`"
-            />
+            >
             <img
               :src="user.avatar.jpg"
               :srcset="user.avatar.jpg2x"
               :alt="user.name"
               width="32"
               height="32"
-            />
+            >
           </picture>
           <span>{{ user.name }}</span>
         </router-link>
-        <a href="#" class="header__logout" @click.prevent="logout">
+        <a
+          href="#"
+          class="header__logout"
+          @click.prevent="logout"
+        >
           <span>Выйти</span>
         </a>
       </template>
-      <router-link v-else :to="{ path: 'login' }" class="header__login" append>
+      <router-link
+        v-else
+        :to="{ path: 'login' }"
+        class="header__login"
+        append
+      >
         <span>Войти</span>
       </router-link>
     </div>
@@ -47,8 +53,11 @@ import { mapGetters, mapState } from "vuex";
 
 import { formatCurrency } from "@/common/helpers.js";
 
+import AppLogo from "@/common/components/AppLogo.vue";
+
 export default {
   name: "AppLayoutHeader",
+  components: { AppLogo },
   computed: {
     ...mapGetters("Auth", { user: "normolizedUser" }),
     ...mapState("Auth", ["isAuthenticated"]),
@@ -65,7 +74,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   position: relative;
   z-index: 2;

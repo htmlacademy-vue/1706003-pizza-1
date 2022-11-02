@@ -2,7 +2,7 @@
   <div>
     <ProfileAddressForm
       v-if="isChanging"
-      :newAddress="false"
+      :new-address="false"
       :title="title"
       :address="address"
       @setAddressInfo="changeAddressInfo({ ...$event, id: address.id })"
@@ -11,9 +11,9 @@
     <ProfileAddress
       v-else
       :title="title"
-      @changeAddress="changeAddress"
       :address="addressStr"
       :comment="comment ? comment : 'Комментарий отсутствует'"
+      @changeAddress="changeAddress"
     />
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
   computed: {
     ...mapState("Auth", ["addresses"]),
     address() {
-      return this.addresses.find((address) => address.id === this.addressId);
+      return this.addresses.find((address) => address.addressId === this.addressId);
     },
     addressStr() {
       return `ул. ${this.address.street}, д. ${this.address.building}, кв. ${

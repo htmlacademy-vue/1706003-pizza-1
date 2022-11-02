@@ -1,5 +1,8 @@
 <template>
-  <component :is="layout" class="app-layout">
+  <component
+    :is="layout"
+    class="app-layout"
+  >
     <slot />
   </component>
 </template>

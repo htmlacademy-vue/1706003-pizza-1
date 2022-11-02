@@ -1,13 +1,21 @@
 <template>
-  <div class="content__constructor">
-    <div class="pizza" :class="pizzaFoundationClass">
-      <AppDrop class="pizza__wrapper" @drop="addIngredient">
-        <div
-          v-for="ingredient in filteredIngredients"
-          :key="ingredient.ingredientId"
-          class="pizza__filling"
-          :class="ingredientClass(ingredient.ingredientId)"
-        ></div>
+  <div class="constructor">
+    <div
+      class="pizza"
+      :class="pizzaFoundationClass"
+    >
+      <AppDrop
+        class="pizza__wrapper"
+        @drop="addIngredient"
+      >
+        <transition-group name="ingredients">
+          <div
+            v-for="ingredient in filteredIngredients"
+            :key="ingredient.ingredientId"
+            class="pizza__filling"
+            :class="ingredientClass(ingredient.ingredientId)"
+          />
+        </transition-group>
       </AppDrop>
     </div>
   </div>
@@ -39,10 +47,10 @@ export default {
         large: "big",
       };
       const dough = this.normolizedDought.find(
-        (dough) => dough.id === this.doughId
+        (dough) => dough.doughId === this.doughId
       );
       const sauce = this.normolizedSauces.find(
-        (sauce) => sauce.id === this.sauceId
+        (sauce) => sauce.sauceId === this.sauceId
       );
       return `pizza--foundation--${doughClassModifier[dough.value]}-${
         sauce.value
@@ -59,7 +67,7 @@ export default {
     ingredientClass(id) {
       const classObj = {};
       const ingredient = this.normolizedIngredients.find(
-        (ingredient) => ingredient.id === id
+        (ingredient) => ingredient.ingredientId === id
       );
       const quantity = this.ingredientsQty.find(
         (ingredient) => ingredient.ingredientId === id
@@ -71,12 +79,12 @@ export default {
     },
     addIngredient(ingredient) {
       const qty = this.ingredientsQty.find(
-        (element) => element.ingredientId === ingredient.id
+        (element) => element.ingredientId === ingredient.ingredientId
       ).quantity;
 
       if (qty <= 2) {
         this.changeIngredientQty({
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.ingredientId,
           quantity: qty + 1,
         });
       }
@@ -86,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss">
-.content__constructor {
+.constructor {
   width: 315px;
   margin-top: 25px;
   margin-right: auto;
@@ -208,5 +216,14 @@ export default {
   &--tomatoes {
     background-image: url("~@/assets/img/filling-big/tomatoes.svg");
   }
+}
+.ingredients-enter-active,
+.ingredients-leave-active {
+  transition: all .5s ease;
+}
+.ingredients-enter,
+.ingredients-leave-to {
+  transform: scale(1.1);
+  opacity: 0;
 }
 </style>

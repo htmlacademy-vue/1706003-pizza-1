@@ -1,24 +1,27 @@
 <template>
-  <div class="content__dough">
-    <ContentSheet :contentClasses="['dough']">
-      <template #title>Выберите тесто</template>
-      <template #content>
-        <RadioButton
-          v-for="dough in normolizedDought"
-          :key="dough.id"
-          :value="dough.id"
-          :name="'dough'"
-          :checked="selectedDoughId === dough.id"
-          @change="changeBuilderEntity({ entity: 'doughId', value: dough.id })"
-          class="dough__input"
-          :class="`dough__input--${dough.value}`"
-        >
-          <b>{{ dough.name }}</b>
-          <span>{{ dough.description }}</span>
-        </RadioButton>
-      </template>
-    </ContentSheet>
-  </div>
+  <ContentSheet
+    :content-classes="['dough']"
+    class="content__dough"
+  >
+    <template #title>
+      Выберите тесто
+    </template>
+    <template #content>
+      <RadioButton
+        v-for="dough in normolizedDought"
+        :key="dough.doughId"
+        :value="dough.doughId"
+        :name="'dough'"
+        :checked="selectedDoughId === dough.doughId"
+        class="dough__input"
+        :class="`dough__input--${dough.value}`"
+        @change="changeBuilderEntity({ entity: 'doughId', value: dough.doughId })"
+      >
+        <b>{{ dough.name }}</b>
+        <span>{{ dough.description }}</span>
+      </RadioButton>
+    </template>
+  </ContentSheet>
 </template>
 
 <script>
@@ -43,12 +46,13 @@ export default {
 </script>
 
 <style lang="scss">
-.content__dough {
+.content__dough  {
   width: 527px;
   margin-top: 15px;
   margin-right: auto;
   margin-bottom: 15px;
 }
+
 .dough__input {
   position: relative;
 

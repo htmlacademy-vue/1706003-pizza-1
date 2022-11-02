@@ -1,6 +1,10 @@
 <template>
   <ul class="order__list">
-    <OrdersListItem v-for="pizza in pizzas" :key="pizza.id" :pizza="pizza" />
+    <OrdersListItem
+      v-for="pizza in pizzas"
+      :key="pizza.id"
+      :pizza="pizza"
+    />
   </ul>
 </template>
 

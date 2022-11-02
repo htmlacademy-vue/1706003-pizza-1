@@ -84,6 +84,7 @@ export default {
 
     async getAddresses({ commit }) {
       const addresses = await this.$api.addresses.query();
+      addresses.forEach((item) => {delete Object.assign(item, {['addressId']: item['id'] })['id'];});
       commit(
         "SET_ENTITY",
         {

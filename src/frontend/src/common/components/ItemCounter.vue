@@ -1,10 +1,10 @@
 <template>
   <div class="counter">
     <button
-      @click="decrement"
       :disabled="counter === min"
       type="button"
       class="counter__button counter__button--minus"
+      @click="decrement"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -14,13 +14,13 @@
       class="counter__input"
       disabled
       :value="counter"
-    />
+    >
     <button
-      @click="increment"
       :disabled="counter === max"
       type="button"
       class="counter__button counter__button--plus"
       :class="buttonColor ? buttonClassModifier[buttonColor] : null"
+      @click="increment"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -38,6 +38,7 @@ export default {
     max: {
       type: Number,
       required: false,
+      default: Infinity,
     },
     counter: {
       type: Number,
@@ -46,6 +47,7 @@ export default {
     buttonColor: {
       type: String,
       required: false,
+      default: "",
     },
   },
   data() {

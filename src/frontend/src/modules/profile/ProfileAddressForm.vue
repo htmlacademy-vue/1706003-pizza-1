@@ -1,6 +1,6 @@
 <template>
   <form
-    class="address-form address-form--opened sheet"
+    class="sheet address-form address-form--opened"
     @submit.prevent="setAddressInfo"
   >
     <div class="address-form__header">
@@ -12,77 +12,85 @@
         <label class="input">
           <span>Название адреса*</span>
           <input
+            v-model="name"
             type="text"
             name="addr-name"
             placeholder="Введите название адреса"
             required
-            v-model="name"
-          />
+          >
         </label>
       </div>
       <div class="address-form__input address-form__input--size--normal">
         <label class="input">
           <span>Улица*</span>
           <input
+            v-model="street"
             type="text"
             name="addr-street"
             placeholder="Введите название улицы"
             required
-            v-model="street"
-          />
+          >
         </label>
       </div>
       <div class="address-form__input address-form__input--size--small">
         <label class="input">
           <span>Дом*</span>
           <input
+            v-model="building"
             type="text"
             name="addr-house"
             placeholder="Введите номер дома"
             required
-            v-model="building"
-          />
+          >
         </label>
       </div>
       <div class="address-form__input address-form__input--size--small">
         <label class="input">
           <span>Квартира</span>
           <input
+            v-model="flat"
             type="text"
             name="addr-apartment"
             placeholder="Введите № квартиры"
-            v-model="flat"
-          />
+          >
         </label>
       </div>
       <div class="address-form__input">
         <label class="input">
           <span>Комментарий</span>
           <input
+            v-model="comment"
             type="text"
             name="addr-comment"
             placeholder="Введите комментарий"
-            v-model="comment"
-          />
+          >
         </label>
       </div>
     </div>
 
     <div class="address-form__buttons">
-      <button
-        type="button"
-        class="button button--transparent"
+      <AppButton
         v-if="!newAddress"
+        type="button"
+        class="button"
+        :modifier="['transparent']"
         @click="delAddressInfo"
       >
         Удалить
-      </button>
-      <button type="submit" class="button">Сохранить</button>
+      </AppButton>
+      <AppButton
+        type="submit"
+        class="button"
+      >
+        Сохранить
+      </AppButton>
     </div>
   </form>
 </template>
 
 <script>
+import AppButton from "@/common/components/AppButton.vue";
+
 function initialState() {
   return {
     name: "",
@@ -94,6 +102,7 @@ function initialState() {
 }
 export default {
   name: "ProfileAddressForm",
+  components: { AppButton },
   props: {
     newAddress: {
       type: Boolean,
@@ -106,6 +115,13 @@ export default {
     address: {
       type: Object,
       required: false,
+      default: () => ({
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
+      }),
     },
   },
   data() {
@@ -218,5 +234,61 @@ export default {
   padding: 10px 16px;
 
   border-bottom: 1px solid rgba($green-500, 0.1);
+}
+
+.input {
+  display: block;
+
+  span {
+    @include r-s14-h16;
+
+    display: block;
+
+    margin-bottom: 4px;
+  }
+
+  input {
+    @include r-s16-h19;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+
+    transition: 0.3s;
+
+    color: $black;
+    border: 1px solid $purple-400;
+    border-radius: 8px;
+    outline: none;
+    background-color: $white;
+
+    font-family: inherit;
+
+    &:focus {
+      border-color: $green-500;
+    }
+  }
+
+  &:hover {
+    input {
+      border-color: $black;
+    }
+  }
+
+  &--big-label {
+    display: flex;
+    align-items: center;
+
+    span {
+      @include b-s16-h19;
+
+      margin-right: 16px;
+
+      white-space: nowrap;
+    }
+  }
 }
 </style>

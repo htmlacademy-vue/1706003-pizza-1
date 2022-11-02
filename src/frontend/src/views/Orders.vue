@@ -1,14 +1,15 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">История заказов</h1>
+      <AppTitle :modifier="['big']">
+        История заказов
+      </AppTitle>
     </div>
 
     <OrdersItem
       v-for="order in formattedOrders"
-      :key="order.id"
-      :id="order.id"
-      :address="order.orderAddress.name"
+      :key="order.orderId"
+      :order-id="order.orderId"
     />
   </div>
 </template>
@@ -18,17 +19,25 @@ import { mapActions, mapGetters } from "vuex";
 
 import OrdersItem from "@/modules/orders/components/OrdersItem.vue";
 
+import AppTitle from "@/common/components/AppTitle.vue";
+
 export default {
   name: "Orders",
-  components: { OrdersItem },
+  components: { OrdersItem, AppTitle },
   computed: {
     ...mapGetters("Orders", ["formattedOrders"]),
-  },
-  methods: {
-    ...mapActions("Orders", ["getOrders"]),
   },
   created() {
     this.getOrders();
   },
+  methods: {
+    ...mapActions("Orders", ["getOrders"]),
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.layout__title {
+  margin-bottom: 27px;
+}
+</style>

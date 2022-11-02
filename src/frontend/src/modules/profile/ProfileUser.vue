@@ -4,20 +4,20 @@
       <source
         type="image/webp"
         :srcset="`${user.avatar.webp} 1x, ${user.avatar.webp2x} 2x`"
-      />
+      >
       <img
         :src="user.avatar.jpg"
         :srcset="user.avatar.jpg2x"
         :alt="user.name"
         width="72"
         height="72"
-      />
+      >
     </picture>
     <div class="user__name">
-      <span>{{ user.name }}</span>
+      <span class="text">{{ user.name }}</span>
     </div>
     <p class="user__phone">
-      Контактный телефон: <span>{{ user.phone }}</span>
+      Контактный телефон: <span class="text">{{ user.phone }}</span>
     </p>
   </div>
 </template>
@@ -47,18 +47,11 @@ export default {
 
   margin-left: 30px;
 
-  span {
+  .text {
     display: inline-block;
 
     vertical-align: middle;
   }
-}
-
-.user__button {
-  display: inline-block;
-
-  cursor: pointer;
-  vertical-align: middle;
 }
 
 .user__phone {
@@ -67,7 +60,7 @@ export default {
   width: 100%;
   margin-top: 20px;
 
-  span {
+  .text {
     font-weight: 400;
   }
 }

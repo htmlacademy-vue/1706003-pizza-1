@@ -1,3 +1,40 @@
+<template>
+  <button
+    class="button"
+    :class="{
+      'button--border': modifier.includes('secondary'),
+      'button--transparent': modifier.includes('transparent'),
+      'button--arrow': modifier.includes('arrow'),
+    }"
+    :type="type"
+    :disabled="disabled"
+    v-on="$listeners"
+  >
+    <slot />
+  </button>
+</template>
+
+<script>
+export default {
+  name: "AppButton",
+  props: {
+    type: {
+      type: String,
+      default: "button",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    modifier: {
+      type: Array,
+      default: () => ([]),
+    }
+  },
+};
+</script>
+
+<style lang="scss" scoped>
 .button {
   $bl: &;
 
@@ -29,7 +66,7 @@
     background-color: $green-600;
   }
 
-  &:focus:not(:disabled) {
+  &:focus-visible:not(:disabled) {
     opacity: 0.5;
   }
 
@@ -103,3 +140,4 @@
     color: $green-500;
   }
 }
+</style>
