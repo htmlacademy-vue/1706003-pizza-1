@@ -3,10 +3,12 @@
     class="layout-form"
     @submit.prevent="makeAnOrder"
   >
-    <CartPopup
-      v-if="popup.isOpen"
-      @closePopup="closePopup"
-    />
+    <transition name="show">
+      <CartPopup
+        v-if="popup.isOpen"
+        @closePopup="closePopup"
+      />
+    </transition>
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -30,7 +32,12 @@
       </div>
     </main>
     <CartFooter :order-cost="cost" />
-    <router-view />
+    <transition
+      name="show"
+      appear
+    >
+      <router-view />
+    </transition>
   </form>
 </template>
 
@@ -117,5 +124,12 @@ export default {
   width: 770px;
   margin: 0 auto;
 }
-
+.show-enter-active,
+.show-leave-active {
+  transition: all 0.5s ease;
+}
+.show-enter,
+.show-leave-to {
+  opacity: 0;
+}
 </style>

@@ -66,8 +66,6 @@ export default {
   },
   getters: {
     price(state, getters, rootState, rootGetters) {
-      console.log("state", state);
-      console.log("rootGetters", rootGetters);
       return pizzaPrice({ elId: state, elDescription: rootGetters });
     },
   },

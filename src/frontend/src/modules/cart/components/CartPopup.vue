@@ -95,7 +95,6 @@ export default {
     text-align: center;
   }
 }
-
 .popup__title {
   text-align: center;
 
@@ -108,7 +107,6 @@ export default {
     color: $black;
   }
 }
-
 .popup__button {
   display: flex;
   justify-content: center;

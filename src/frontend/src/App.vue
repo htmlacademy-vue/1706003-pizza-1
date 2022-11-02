@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <AppLayout>
-      <router-view />
+      <transition
+        name="slide"
+        appear
+      >
+        <router-view />
+      </transition>
     </AppLayout>
   </div>
 </template>
@@ -30,4 +35,15 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/scss/app";
+
+.slide-enter-active {
+  transition: all 0.5s ease;
+}
+.slide-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-enter, .slide-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
 </style>

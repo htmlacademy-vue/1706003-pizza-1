@@ -35,7 +35,12 @@
           />
         </form>
       </div>
-      <router-view />
+      <transition
+        name="show"
+        appear
+      >
+        <router-view />
+      </transition>
     </div>
   </main>
 </template>
@@ -185,5 +190,14 @@ export default {
       white-space: nowrap;
     }
   }
+}
+
+.show-enter-active,
+.show-leave-active {
+  transition: all 0.5s ease;
+}
+.show-enter,
+.show-leave-to {
+  opacity: 0;
 }
 </style>

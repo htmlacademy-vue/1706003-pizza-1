@@ -8,12 +8,14 @@
         class="pizza__wrapper"
         @drop="addIngredient"
       >
-        <div
-          v-for="ingredient in filteredIngredients"
-          :key="ingredient.ingredientId"
-          class="pizza__filling"
-          :class="ingredientClass(ingredient.ingredientId)"
-        />
+        <transition-group name="ingredients">
+          <div
+            v-for="ingredient in filteredIngredients"
+            :key="ingredient.ingredientId"
+            class="pizza__filling"
+            :class="ingredientClass(ingredient.ingredientId)"
+          />
+        </transition-group>
       </AppDrop>
     </div>
   </div>
@@ -214,5 +216,14 @@ export default {
   &--tomatoes {
     background-image: url("~@/assets/img/filling-big/tomatoes.svg");
   }
+}
+.ingredients-enter-active,
+.ingredients-leave-active {
+  transition: all .5s ease;
+}
+.ingredients-enter,
+.ingredients-leave-to {
+  transform: scale(1.1);
+  opacity: 0;
 }
 </style>
