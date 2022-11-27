@@ -26,7 +26,7 @@ export default {
     },
     checked: {
       type: Boolean,
-      required: false,
+      required: true,
     },
   },
 };
