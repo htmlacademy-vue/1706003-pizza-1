@@ -9,6 +9,13 @@ import {
   CrudApiService,
 } from "@/services/api.service";
 
+const values = {
+  dough: doughValues,
+  ingredients: ingredientsValues,
+  sauces: saucesValues,
+  sizes: sizeValues,
+};
+
 export function formatCurrency(value, currency = "RUB") {
   return new Intl.NumberFormat("ru-RU", {
     style: "currency",
@@ -60,13 +67,6 @@ export function pizzaPrice({ elId, elDescription }) {
   );
   return (mainCost + addedCost) * size.multiplier;
 }
-
-const values = {
-  dough: doughValues,
-  ingredients: ingredientsValues,
-  sauces: saucesValues,
-  sizes: sizeValues,
-};
 
 export function normalize(array, name) {
   return array.map((item) => ({
