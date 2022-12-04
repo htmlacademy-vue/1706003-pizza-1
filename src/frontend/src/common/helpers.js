@@ -8,6 +8,7 @@ import {
   ReadOnlyApiService,
   CrudApiService,
 } from "@/services/api.service";
+import user from "@/static/user";
 
 const values = {
   dough: doughValues,
@@ -91,4 +92,21 @@ export const createResources = () => {
 export const setAuth = (store) => {
   store.$api.auth.setAuthHeader();
   store.dispatch("Auth/getMe");
+};
+
+export const authenticateUser = (store) => {
+  store.commit('SET_ENTITY', {
+    module: 'Auth',
+    entity: 'user',
+    value: user,
+  }, { root: true });
+  store.commit(
+    "SET_ENTITY",
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
 };
