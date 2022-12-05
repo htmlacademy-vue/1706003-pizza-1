@@ -3,6 +3,7 @@
     <div class="sign-form">
       <AppClose
         :modifier="'white'"
+        data-test="close-button"
         @click="closeAuthModal"
       >
         <span class="visually-hidden">Закрыть форму авторизации</span>
@@ -22,6 +23,7 @@
               type="email"
               name="email"
               placeholder="example@mail.ru"
+              data-test="email-input"
             >
           </label>
         </div>
@@ -34,6 +36,7 @@
               type="password"
               name="pass"
               placeholder="***********"
+              data-test="password-input"
             >
           </label>
         </div>

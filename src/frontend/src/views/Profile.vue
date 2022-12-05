@@ -14,6 +14,7 @@
         :key="address.addressId"
         :title="address.name"
         :address-id="address.addressId"
+        data-test="adress"
       />
     </div>
 

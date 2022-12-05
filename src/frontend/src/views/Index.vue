@@ -23,6 +23,7 @@
               name="pizza_name"
               placeholder="Введите название пиццы"
               required
+              data-test="name-input"
             >
           </label>
 
@@ -31,6 +32,7 @@
           <BuilderPriceCounter
             :price="price"
             :disabled="disabledGetPrice"
+            data-test="price-counter"
             @addToOrder="addToOrder"
           />
         </form>
@@ -94,7 +96,7 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity", "resetBuilderState"]),
-    ...mapActions("Cart", ["addPizzaToCart", "replacePizzaInCart"]),
+    ...mapActions("Cart", ["addPizzaToCart"]),
     addToOrder() {
       this.changeBuilderEntity({
         entity: "name",

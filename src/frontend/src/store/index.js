@@ -148,6 +148,7 @@ export const getters = ({
 export default new Vuex.Store({
   state,
   actions,
+  getters,
   mutations,
   plugins: [VuexPlugins],
   modules
