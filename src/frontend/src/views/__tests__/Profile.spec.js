@@ -7,6 +7,17 @@ import Profile from '@/views/Profile';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
+const addresses =[
+  {
+    addressId: 0,
+    name: "string",
+    street: "string",
+    building: "string",
+    flat: "string",
+    comment: "string",
+    userId: "string"
+  }
+]
 
 const authenticateUser = (store) => {
   store.commit('SET_ENTITY', {
@@ -22,12 +33,13 @@ const authenticateUser = (store) => {
   store.commit('SET_ENTITY', {
     module: "Auth",
     entity: "addresses",
-    value: [],
+    value: addresses,
   });
 };
 
 describe('Profile', () => {
   let login;
+  let actions;
   let store;
   let dispatch;
   let wrapper;
@@ -47,9 +59,14 @@ describe('Profile', () => {
   };
 
   beforeEach(() => {
+    actions = {
+      Auth: {
+        setAddress: jest.fn(),
+      },
+    };
     login = jest.fn();
     methods.login = login;
-    store = generateMockStore();
+    store = generateMockStore(actions);
     mocks.$store.dispatch = dispatch;
   });
 
@@ -66,8 +83,51 @@ describe('Profile', () => {
   it ('renders orders', () => {
     authenticateUser(store);
     createComponent({ localVue, mocks, store });
-    const userAdress = wrapper.findAll('[data-test="adress"]');
-    expect(Array.from(userAdress).length).toEqual(orders.length);
+    const userAddress = wrapper.findAll('[data-test="address"]');
+    expect(Array.from(userAddress).length).toEqual(addresses.length);
   });
+
+  it ('doesn\'t display add new address', () => {
+    authenticateUser(store);
+    createComponent({ localVue, mocks, store  });
+    expect(wrapper.find('[data-test="add-new-address"]').exists()).toBeFalsy();
+  });
+
+  it ('displays add new address', async () => {
+    authenticateUser(store);
+    createComponent({ localVue, mocks, store  });
+
+    const btnAddNewAddress = wrapper.find('[data-test="btn-add-new-address"]');
+    await btnAddNewAddress.trigger('click');
+
+    expect(wrapper.find('[data-test="add-new-address"]').exists()).toBeTruthy();
+  });
+
+  it ('set new address', async () => {
+    authenticateUser(store);
+    createComponent({ localVue, mocks, store  });
+
+    const btnAddNewAddress = wrapper.find('[data-test="btn-add-new-address"]');
+    await btnAddNewAddress.trigger('click');
+
+    const btnSetNewAddress = wrapper.find('[data-test="btn-set-new-address"]');
+    btnSetNewAddress.vm.$emit('setAddressInfo', {
+      name: "name",
+      street: "street",
+      building: "building",
+      flat: "flat",
+      comment: "comment"
+    });
+
+    expect(actions.Auth.setAddress)
+    .toHaveBeenCalledWith(
+      expect.any(Object), {
+        name: "name",
+        street: "street",
+        building: "building",
+        flat: "flat",
+        comment: "comment"
+      });
+  }); 
 
 });
