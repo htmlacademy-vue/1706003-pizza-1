@@ -80,10 +80,10 @@ describe('Profile', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  it ('renders orders', () => {
+  it ('renders addresses', () => {
     authenticateUser(store);
     createComponent({ localVue, mocks, store });
-    const userAddress = wrapper.findAll('[data-test="address"]');
+    const userAddress = wrapper.findAll('[data-test="user-address"]');
     expect(Array.from(userAddress).length).toEqual(addresses.length);
   });
 

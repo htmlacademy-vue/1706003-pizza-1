@@ -11,6 +11,7 @@
         :alt="user.name"
         width="72"
         height="72"
+        data-test="user-avatar"
       >
     </picture>
     <div class="user__name">
