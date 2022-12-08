@@ -8,7 +8,9 @@
     >
     <p>
       <span>{{ miscItem.name }}</span>
-      <b>{{ `${quantity}x${formatedPrice}` }}</b>
+      <b data-test="add-item-price">
+        {{ `${quantity}x${formatedPrice}` }}
+      </b>
     </p>
   </li>
 </template>
