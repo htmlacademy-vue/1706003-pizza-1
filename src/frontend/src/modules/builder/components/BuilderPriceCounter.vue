@@ -1,11 +1,15 @@
 <template>
   <div class="result">
-    <p class="text">
+    <p
+      class="text"
+      data-test="pizza-price"
+    >
       Итого: {{ formattedPrice }}
     </p>
     <AppButton
       class="button"
       :disabled="disabled"
+      data-test="btn-add-to-order"
       @click="addToOrder"
     >
       Готовьте!
