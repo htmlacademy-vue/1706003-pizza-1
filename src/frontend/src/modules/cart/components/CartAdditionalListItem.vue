@@ -17,11 +17,14 @@
           :counter="quantity"
           :button-color="'orange'"
           class="additional-list__counter"
+          data-test="misc-counter"
           @changeCounter="changeQty"
         />
 
         <div class="additional-list__price">
-          <b>× {{ formattedPrice }}</b>
+          <b data-test="pizza-misc-price">
+            × {{ formattedPrice }}
+          </b>
         </div>
       </div>
     </div>

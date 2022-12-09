@@ -14,10 +14,14 @@
       :counter="quantity"
       :button-color="'orange'"
       class="cart-list__counter"
+      data-test="item-counter"
       @changeCounter="changeQty"
     />
 
-    <div class="cart-list__price">
+    <div
+      class="cart-list__price"
+      data-test="pizza-item-price"
+    >
       <b>{{ formattedFinalPrice }}</b>
     </div>
 
@@ -25,6 +29,7 @@
       <button
         type="button"
         class="cart-list__edit"
+        data-test="btn-change-pizza"
         @click="changePizza"
       >
         Изменить

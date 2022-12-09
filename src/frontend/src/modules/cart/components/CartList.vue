@@ -9,6 +9,7 @@
       :size-id="pizza.sizeId"
       :ingredients-id="pizza.ingredients"
       :quantity="pizza.quantity"
+      data-test="cart-list-item"
       @changeQty="changePizzaQty({ index, quantity: $event })"
       @changePizza="changePizza(index)"
     />
@@ -29,11 +30,11 @@ export default {
   methods: {
     ...mapActions("Cart", ["changePizzaQty", "deletePizzaFromCart"]),
     ...mapActions("Builder", ["setBuilderState"]),
-    changePizza(index) {
+    async changePizza(index) {
       const pizza = this.pizzas[index];
       this.setBuilderState({ state: pizza });
       this.deletePizzaFromCart({ index });
-      this.$router.push("/");
+      await this.$router.push("/");
     },
   },
 };
