@@ -14,7 +14,9 @@
       чтоб собрать ещё одну пиццу
     </p>
     <div class="footer__price">
-      <b>Итого: {{ formattedOrderCost }}</b>
+      <b data-test="cart-cost">
+        Итого: {{ formattedOrderCost }}
+      </b>
     </div>
 
     <div class="footer__submit">
@@ -22,6 +24,7 @@
         type="submit"
         class="button"
         :disabled="!orderCost"
+        data-test="btn-place-an-order"
       >
         Оформить заказ
       </AppButton>

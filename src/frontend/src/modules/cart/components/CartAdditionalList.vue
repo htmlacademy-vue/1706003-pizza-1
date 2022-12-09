@@ -7,6 +7,7 @@
       :name="product.name"
       :image="product.image"
       :price="product.price"
+      data-test="cart-list-add-item"
       @changeQty="
         changeMiscQty({ misc: { miscId: product.miscId, quantity: $event } })
       "

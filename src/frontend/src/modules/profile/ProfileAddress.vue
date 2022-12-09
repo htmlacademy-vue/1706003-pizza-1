@@ -1,21 +1,28 @@
 <template>
   <div class="sheet address-form">
     <div class="address-form__header">
-      <b>{{ title }}</b>
+      <b data-test="title">{{ title }}</b>
       <div class="address-form__edit">
         <button
           type="button"
           class="icon"
+          data-test="dtn-change-address"
           @click="changeAddress"
         >
           <span class="visually-hidden">Изменить адрес</span>
         </button>
       </div>
     </div>
-    <p class="address-text">
+    <p
+      class="address-text"
+      data-test="address"
+    >
       {{ address }}
     </p>
-    <small class="address-comment">
+    <small
+      class="address-comment"
+      data-test="comment"
+    >
       {{ comment }}
     </small>
   </div>

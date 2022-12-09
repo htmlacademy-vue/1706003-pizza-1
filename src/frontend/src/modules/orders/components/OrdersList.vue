@@ -4,6 +4,7 @@
       v-for="pizza in pizzas"
       :key="pizza.id"
       :pizza="pizza"
+      data-test="order-item"
     />
   </ul>
 </template>

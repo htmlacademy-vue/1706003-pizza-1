@@ -5,6 +5,7 @@
       :new-address="false"
       :title="title"
       :address="address"
+      data-test="profile-address-form"
       @setAddressInfo="changeAddressInfo({ ...$event, id: address.id })"
       @delAddressInfo="deleteAddress({ id: address.id })"
     />
@@ -13,6 +14,7 @@
       :title="title"
       :address="addressStr"
       :comment="comment ? comment : 'Комментарий отсутствует'"
+      data-test="profile-address"
       @changeAddress="changeAddress"
     />
   </div>

@@ -10,6 +10,7 @@
       v-for="order in formattedOrders"
       :key="order.orderId"
       :order-id="order.orderId"
+      data-test="order"
     />
   </div>
 </template>

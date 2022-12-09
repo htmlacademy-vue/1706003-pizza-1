@@ -5,6 +5,7 @@
       :key="product.id"
       :misc-id="product.miscId"
       :quantity="product.quantity"
+      data-test="add-order-item"
     />
   </ul>
 </template>

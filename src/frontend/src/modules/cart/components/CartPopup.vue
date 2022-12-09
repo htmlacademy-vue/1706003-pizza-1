@@ -1,7 +1,10 @@
 <template>
   <div class="modal">
     <div class="popup">
-      <AppClose @click="closePopup">
+      <AppClose
+        data-test="btn-close"
+        @click="closePopup"
+      >
         <span class="visually-hidden">Закрыть попап</span>
       </AppClose>
       <div class="popup__title">
@@ -13,6 +16,7 @@
       <div class="popup__button">
         <AppButton
           class="button"
+          data-test="btn-thx"
           @click="closePopup"
         >
           Отлично, я жду!

@@ -4,7 +4,7 @@
     @submit.prevent="setAddressInfo"
   >
     <div class="address-form__header">
-      <b>{{ title }}</b>
+      <b data-test="address-header">{{ title }}</b>
     </div>
 
     <div class="address-form__wrapper">
@@ -16,6 +16,7 @@
             type="text"
             name="addr-name"
             placeholder="Введите название адреса"
+            data-test="input-address-name"
             required
           >
         </label>
@@ -28,6 +29,7 @@
             type="text"
             name="addr-street"
             placeholder="Введите название улицы"
+            data-test="input-address-street"
             required
           >
         </label>
@@ -40,6 +42,7 @@
             type="text"
             name="addr-house"
             placeholder="Введите номер дома"
+            data-test="input-address-building"
             required
           >
         </label>
@@ -52,6 +55,7 @@
             type="text"
             name="addr-apartment"
             placeholder="Введите № квартиры"
+            data-test="input-address-flat"
           >
         </label>
       </div>
@@ -63,6 +67,7 @@
             type="text"
             name="addr-comment"
             placeholder="Введите комментарий"
+            data-test="input-address-comment"
           >
         </label>
       </div>
@@ -74,6 +79,7 @@
         type="button"
         class="button"
         :modifier="['transparent']"
+        data-test="btn-delete-address"
         @click="delAddressInfo"
       >
         Удалить

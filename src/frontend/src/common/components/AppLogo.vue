@@ -3,14 +3,24 @@
     class="logo"
     src="@/assets/img/logo.svg"
     alt="V!U!E! Pizza logo"
-    width="90"
-    height="40"
+    :width="width"
+    :height="height"
   >
 </template>
 
 <script>
 export default {
   name: "AppLogo",
+  props: {
+    width: {
+      type: Number,
+      default: 90,
+    },
+    height: {
+      type: Number,
+      default: 40,
+    },
+  },
 }
 </script>
 

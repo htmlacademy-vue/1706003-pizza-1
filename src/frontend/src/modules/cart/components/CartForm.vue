@@ -25,12 +25,14 @@
         type="tel"
         name="tel"
         placeholder="+7 999-999-99-99"
+        data-test="cart-phone"
         required
       >
     </label>
 
     <div
       v-if="selectedAddress.id !== 'default_0'"
+      data-test="address-form"
       class="cart-form__address"
     >
       <span class="cart-form__label">Новый адрес:</span>
@@ -42,6 +44,7 @@
             v-model="selectedAddress.street"
             type="text"
             name="street"
+            data-test="cart-street"
             required
             :disabled="selectedAddress.id !== 'default_1'"
           >
@@ -55,6 +58,7 @@
             v-model="selectedAddress.building"
             type="text"
             name="house"
+            data-test="cart-building"
             required
             :disabled="selectedAddress.id !== 'default_1'"
           >
@@ -68,6 +72,7 @@
             v-model="selectedAddress.flat"
             type="text"
             name="apartment"
+            data-test="cart-flat"
             :disabled="selectedAddress.id !== 'default_1'"
           >
         </label>

@@ -20,12 +20,13 @@
         <div
           v-if="!pizzas.length"
           class="sheet cart__empty"
+          data-test="empty-cart"
         >
           <p>В корзине нет ни одного товара</p>
         </div>
 
         <template v-else>
-          <CartList />
+          <CartList data-test="pizza-in-cart" />
           <CartAdditionalList class="cart__additional" />
           <CartForm ref="cartForm" />
         </template>

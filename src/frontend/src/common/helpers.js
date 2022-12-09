@@ -8,6 +8,14 @@ import {
   ReadOnlyApiService,
   CrudApiService,
 } from "@/services/api.service";
+import user from "@/static/user";
+
+const values = {
+  dough: doughValues,
+  ingredients: ingredientsValues,
+  sauces: saucesValues,
+  sizes: sizeValues,
+};
 
 export function formatCurrency(value, currency = "RUB") {
   return new Intl.NumberFormat("ru-RU", {
@@ -61,13 +69,6 @@ export function pizzaPrice({ elId, elDescription }) {
   return (mainCost + addedCost) * size.multiplier;
 }
 
-const values = {
-  dough: doughValues,
-  ingredients: ingredientsValues,
-  sauces: saucesValues,
-  sizes: sizeValues,
-};
-
 export function normalize(array, name) {
   return array.map((item) => ({
     ...item,
@@ -91,4 +92,21 @@ export const createResources = () => {
 export const setAuth = (store) => {
   store.$api.auth.setAuthHeader();
   store.dispatch("Auth/getMe");
+};
+
+export const authenticateUser = (store) => {
+  store.commit('SET_ENTITY', {
+    module: 'Auth',
+    entity: 'user',
+    value: user,
+  }, { root: true });
+  store.commit(
+    "SET_ENTITY",
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
 };

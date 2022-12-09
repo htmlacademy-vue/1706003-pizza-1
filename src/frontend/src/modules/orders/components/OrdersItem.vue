@@ -2,11 +2,15 @@
   <section class="sheet order">
     <div class="order__wrapper">
       <div class="order__number">
-        <b>Заказ #{{ orderId }}</b>
+        <b data-test="order-number">
+          Заказ #{{ orderId }}
+        </b>
       </div>
 
       <div class="order__sum">
-        <span>Сумма заказа: {{ cost }}</span>
+        <span data-test="order-sum">
+          Сумма заказа: {{ cost }}
+        </span>
       </div>
 
       <div class="order__button">
@@ -14,6 +18,7 @@
           type="button"
           class="button"
           :modifier="['secondary']"
+          data-test="btn-dlt-order"
           @click="deleteOrder({ orderId })"
         >
           Удалить
@@ -23,6 +28,7 @@
         <AppButton
           type="button"
           class="button"
+          data-test="btn-rpt-order"
           @click="repeatOrder({ orderId })"
         >
           Повторить
@@ -34,7 +40,10 @@
 
     <OrdersAdditionalList :misc="misc" />
 
-    <p class="order__address">
+    <p
+      class="order__address"
+      data-test="oredr-address"
+    >
       {{ address ? `Адрес доставки: ${address}` : "Самовывоз" }}
     </p>
   </section>

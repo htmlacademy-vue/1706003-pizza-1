@@ -8,7 +8,10 @@
       :ingredients="formatedIngredients"
     />
 
-    <p class="order__price">
+    <p
+      class="order__price"
+      data-test="order-item-price"
+    >
       {{ `${quantity}x${formatedPrice}` }}
     </p>
   </li>

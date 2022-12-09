@@ -14,16 +14,19 @@
         :key="address.addressId"
         :title="address.name"
         :address-id="address.addressId"
+        data-test="user-address"
       />
     </div>
 
     <div
       v-if="isAddingNewAddress"
       class="layout__address"
+      data-test="add-new-address"
     >
       <ProfileAddressForm
         :new-address="true"
         title="Новый адрес"
+        data-test="btn-set-new-address"
         @setAddressInfo="setNewAddress"
       />
     </div>
@@ -33,6 +36,7 @@
         type="button"
         class="button"
         :modifier="['secondary']"
+        data-test="btn-add-new-address"
         @click="addNewAddress"
       >
         Добавить новый адрес
@@ -69,7 +73,7 @@ export default {
     ...mapState("Auth", ["addresses"]),
   },
   methods: {
-    ...mapActions("Auth", ["setAddress", "getAddresses"]),
+    ...mapActions("Auth", ["setAddress"]),
     addNewAddress() {
       this.isAddingNewAddress = true;
     },
