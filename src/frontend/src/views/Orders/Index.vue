@@ -17,6 +17,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { auth } from "@/middlewares";
 
 import OrdersItem from "@/modules/orders/components/OrdersItem.vue";
 
@@ -24,6 +25,8 @@ import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "Orders",
+  layout: "AppLayoutMain",
+  middlewares: auth,
   components: { OrdersItem, AppTitle },
   computed: {
     ...mapGetters("Orders", ["formattedOrders"]),

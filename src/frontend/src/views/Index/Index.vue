@@ -59,6 +59,7 @@ import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "IndexHome",
+  layout: "AppLayoutDefault",
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,

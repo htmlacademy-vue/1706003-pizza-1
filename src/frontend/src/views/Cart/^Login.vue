@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { isLoggedIn } from "@/middlewares";
+
 import validator from "@/common/mixins/validator";
 
 import AppButton from "@/common/components/AppButton.vue";
@@ -60,6 +62,7 @@ import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "Login",
+  middlewares: isLoggedIn,
   components: { AppButton, AppClose, AppTitle },
   mixins: [validator],
   data() {

@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { generateMockStore } from '@/store/mocks';
 import user from '@/static/user';
-import ProfileAddressContainer from '@/modules/profile/ProfileAddressContainer';
+import ProfileAddressContainer from '@/modules/profile/components/ProfileAddressContainer';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

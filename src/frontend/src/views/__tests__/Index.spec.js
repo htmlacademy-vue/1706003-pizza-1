@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { generateMockStore } from '@/store/mocks';
 import pizza from '@/static/pizza';
-import Index from '@/views/Index.vue';
+import Index from '@/views/Index/Index.vue';
 import AppTitle from "@/common/components/AppTitle.vue";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";

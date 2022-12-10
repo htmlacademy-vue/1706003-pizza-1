@@ -23,8 +23,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-import ProfileAddressForm from "@/modules/profile/ProfileAddressForm.vue";
-import ProfileAddress from "@/modules/profile/ProfileAddress.vue";
+import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm.vue";
+import ProfileAddress from "@/modules/profile/components/ProfileAddress.vue";
 
 export default {
   name: "ProfileAddressContainer",

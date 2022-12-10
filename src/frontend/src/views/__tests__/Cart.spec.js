@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import { generateMockStore } from '@/store/mocks';
 import user from '@/static/user';
 import pizza from '@/static/pizza';
-import Cart from '@/views/Cart';
+import Cart from '@/views/Cart/Index.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

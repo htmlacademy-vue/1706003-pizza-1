@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ProfileAddressForm from '@/modules/profile/ProfileAddressForm';
+import ProfileAddressForm from '@/modules/profile/components/ProfileAddressForm';
 
 describe('ProfileAddress', () => {
   let wrapper;

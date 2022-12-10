@@ -47,16 +47,19 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { auth } from "@/middlewares";
 
-import ProfileUser from "@/modules/profile/ProfileUser.vue";
-import ProfileAddressForm from "@/modules/profile/ProfileAddressForm.vue";
-import ProfileAddressContainer from "@/modules/profile/ProfileAddressContainer.vue";
+import ProfileUser from "@/modules/profile/components/ProfileUser.vue";
+import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm.vue";
+import ProfileAddressContainer from "@/modules/profile/components/ProfileAddressContainer.vue";
 
 import AppButton from "@/common/components/AppButton.vue";
 import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "Profile",
+  layout: "AppLayoutMain",
+  middlewares: auth,
   components: {
     ProfileUser,
     ProfileAddressForm,
