@@ -93,7 +93,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .constructor {
   width: 315px;
   margin-top: 25px;

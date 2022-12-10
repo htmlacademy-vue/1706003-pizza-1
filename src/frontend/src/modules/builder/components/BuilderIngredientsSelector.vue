@@ -100,7 +100,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content__ingredients {
   width: 527px;
   margin-top: 15px;

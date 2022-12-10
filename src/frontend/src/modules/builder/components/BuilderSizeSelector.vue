@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content__diameter {
   width: 373px;
   margin-top: 15px;
