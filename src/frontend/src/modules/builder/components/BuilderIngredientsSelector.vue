@@ -79,15 +79,18 @@ export default {
     RadioButton,
     AppDrag,
   },
+
   computed: {
     ...mapGetters(["normolizedSauces", "normolizedIngredients"]),
     selectedSauceId() {
       return this.$store.state.Builder.sauceId;
     },
+    
     selectedIngredients() {
       return this.$store.state.Builder.ingredients;
     },
   },
+
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity", "changeIngredientQty"]),
     ingredientQtyById(id) {

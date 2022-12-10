@@ -39,6 +39,7 @@ export default {
       return this.$store.state.Builder.doughId;
     },
   },
+  
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity"]),
   },

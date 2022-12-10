@@ -70,25 +70,31 @@ export default {
       required: true,
     },
   },
+
   computed: {
     ...mapGetters("Orders", ["formattedOrders"]),
     ...mapState("Orders", ["orders"]),
     order() {
       return this.formattedOrders.find((order) => order.orderId === this.orderId);
     },
+
     address() {
       return this.order.orderAddress?.name || null;
     },
+
     pizzas() {
       return this.order.orderPizzas;
     },
+
     misc() {
       return this.order.orderMisc;
     },
+
     cost() {
       return formatCurrency(this.order.cost);
     },
   },
+
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
     ...mapActions("Cart", [
@@ -96,6 +102,7 @@ export default {
       "addPizzaToCart",
       "changeMiscQty",
     ]),
+    
     repeatOrder({ orderId }) {
       this.resetCartState();
       const pizzas = this.orders

@@ -38,6 +38,7 @@ export default {
       return this.$store.state.Builder.sizeId;
     },
   },
+  
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity"]),
   },

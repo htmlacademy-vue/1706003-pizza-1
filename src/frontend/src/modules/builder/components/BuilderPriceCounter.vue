@@ -30,16 +30,19 @@ export default {
       type: Number,
       required: true,
     },
+
     disabled: {
       type: Boolean,
       default: false,
     },
   },
+
   computed: {
     formattedPrice() {
       return formatCurrency(this.price);
     },
   },
+  
   methods: {
     addToOrder() {
       this.$emit("addToOrder");

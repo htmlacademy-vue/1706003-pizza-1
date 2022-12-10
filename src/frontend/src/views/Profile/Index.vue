@@ -67,19 +67,23 @@ export default {
     AppButton,
     AppTitle 
   },
+
   data() {
     return {
       isAddingNewAddress: false,
     };
   },
+
   computed: {
     ...mapState("Auth", ["addresses"]),
   },
+
   methods: {
     ...mapActions("Auth", ["setAddress"]),
     addNewAddress() {
       this.isAddingNewAddress = true;
     },
+    
     setNewAddress(address) {
       this.setAddress({ ...address });
       this.isAddingNewAddress = false;

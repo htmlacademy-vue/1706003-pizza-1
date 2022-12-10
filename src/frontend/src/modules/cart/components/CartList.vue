@@ -27,6 +27,7 @@ export default {
   computed: {
     ...mapState("Cart", ["pizzas"]),
   },
+  
   methods: {
     ...mapActions("Cart", ["changePizzaQty", "deletePizzaFromCart"]),
     ...mapActions("Builder", ["setBuilderState"]),

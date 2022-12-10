@@ -26,18 +26,22 @@ export default {
       type: String,
       required: true,
     },
+
     size: {
       type: String,
       required: true,
     },
+
     dough: {
       type: String,
       required: true, 
     },
+
     sauce: {
       type: String,
       required: true,
     },
+    
     ingredients: {
       type: String,
       required: true,

@@ -22,11 +22,13 @@ export default {
   components: {
     AppLayout,
   },
+
   data() {
     return {
       transitionName: "",
     };
   },
+
   watch: {
     '$route' (to, from) {
       const pathTo = to.path.split('/').pop();
@@ -39,6 +41,7 @@ export default {
       }
     },
   },
+
   created() {
     window.onerror = function (msg, url, line, col, error) {
       console.error(error);
