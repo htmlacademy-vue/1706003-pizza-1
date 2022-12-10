@@ -68,6 +68,7 @@ export default {
     BuilderPizzaView,
     AppTitle,
   },
+
   data() {
     return {
       pizza: {
@@ -75,6 +76,7 @@ export default {
       },
     };
   },
+
   computed: {
     ...mapState("Builder", [
       "ingredients",
@@ -84,7 +86,9 @@ export default {
       "sizeId",
       "quantity",
     ]),
+
     ...mapGetters("Builder", ["price"]),
+
     disabledGetPrice() {
       return (
         !this.pizza.name ||
@@ -92,9 +96,11 @@ export default {
       );
     },
   },
+
   mounted() {
     this.pizza.name = this.name;
   },
+
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity", "resetBuilderState"]),
     ...mapActions("Cart", ["addPizzaToCart"]),
@@ -103,6 +109,7 @@ export default {
         entity: "name",
         value: this.pizza.name,
       });
+
       this.addPizzaToCart({
         pizza: {
           name: this.name,
@@ -113,8 +120,10 @@ export default {
           ingredients: this.ingredients,
         },
       });
+
       this.resetBuilder();
     },
+    
     resetBuilder() {
       this.resetBuilderState();
       this.pizza.name = "";

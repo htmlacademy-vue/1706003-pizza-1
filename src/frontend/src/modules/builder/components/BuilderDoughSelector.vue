@@ -39,13 +39,14 @@ export default {
       return this.$store.state.Builder.doughId;
     },
   },
+  
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity"]),
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content__dough  {
   width: 527px;
   margin-top: 15px;

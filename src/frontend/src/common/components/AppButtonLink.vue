@@ -20,6 +20,7 @@ export default {
       type: String,
       required: true,
     },
+    
     modifier: {
       type: Array,
       default: () => ([]),

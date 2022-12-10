@@ -16,6 +16,7 @@ export default {
       type: Number,
       default: 90,
     },
+    
     height: {
       type: Number,
       default: 40,

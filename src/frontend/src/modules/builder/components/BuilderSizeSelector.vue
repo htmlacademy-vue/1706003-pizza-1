@@ -38,13 +38,14 @@ export default {
       return this.$store.state.Builder.sizeId;
     },
   },
+  
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity"]),
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content__diameter {
   width: 373px;
   margin-top: 15px;

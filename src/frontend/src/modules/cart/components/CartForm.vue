@@ -109,12 +109,14 @@ export default {
       selectedAddress: defautltAdresses[0],
     };
   },
+
   computed: {
     ...mapState("Auth", { userAdresses: "addresses" }),
     addresses() {
       return [...defautltAdresses, ...this.userAdresses];
     },
   },
+  
   methods: {
     getContactInfo() {
       let address = null;

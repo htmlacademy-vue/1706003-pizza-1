@@ -79,15 +79,18 @@ export default {
     RadioButton,
     AppDrag,
   },
+
   computed: {
     ...mapGetters(["normolizedSauces", "normolizedIngredients"]),
     selectedSauceId() {
       return this.$store.state.Builder.sauceId;
     },
+    
     selectedIngredients() {
       return this.$store.state.Builder.ingredients;
     },
   },
+
   methods: {
     ...mapActions("Builder", ["changeBuilderEntity", "changeIngredientQty"]),
     ingredientQtyById(id) {
@@ -100,7 +103,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content__ingredients {
   width: 527px;
   margin-top: 15px;

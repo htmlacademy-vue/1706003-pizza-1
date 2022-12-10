@@ -47,6 +47,7 @@ export default {
       required: true,
     },
   },
+  
   computed: {
     formattedOrderCost() {
       return formatCurrency(this.orderCost);

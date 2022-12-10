@@ -35,21 +35,25 @@ export default {
       type: Number,
       required: true,
     },
+
     max: {
       type: Number,
       required: false,
       default: Infinity,
     },
+
     counter: {
       type: Number,
       required: true,
     },
+
     buttonColor: {
       type: String,
       required: false,
       default: "",
     },
   },
+
   data() {
     return {
       buttonClassModifier: {
@@ -57,10 +61,12 @@ export default {
       },
     };
   },
+
   methods: {
     increment() {
       this.$emit("changeCounter", this.counter + 1);
     },
+    
     decrement() {
       this.$emit("changeCounter", this.counter - 1);
     },
@@ -68,7 +74,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .counter {
   display: flex;
 

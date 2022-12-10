@@ -65,6 +65,7 @@ export default {
       return formatCurrency(this.$store.getters["Cart/cost"]);
     },
   },
+  
   methods: {
     async logout() {
       await this.$store.dispatch("Auth/logout");

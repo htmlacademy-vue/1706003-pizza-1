@@ -106,6 +106,7 @@ function initialState() {
     comment: "",
   };
 }
+
 export default {
   name: "ProfileAddressForm",
   components: { AppButton },
@@ -114,10 +115,12 @@ export default {
       type: Boolean,
       required: true,
     },
+
     title: {
       type: String,
       required: true,
     },
+
     address: {
       type: Object,
       required: false,
@@ -130,6 +133,7 @@ export default {
       }),
     },
   },
+
   data() {
     return {
       name: this.address ? this.address.name : "",
@@ -139,10 +143,12 @@ export default {
       comment: this.address ? this.address.comment : "",
     };
   },
+
   methods: {
     resetForm() {
       Object.assign(this.$data, initialState());
     },
+
     setAddressInfo(event) {
       this.$emit("setAddressInfo", {
         name: this.name,
@@ -154,6 +160,7 @@ export default {
       this.resetForm();
       event.target.reset();
     },
+    
     delAddressInfo() {
       this.$emit("delAddressInfo");
     },

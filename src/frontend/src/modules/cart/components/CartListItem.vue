@@ -54,27 +54,33 @@ export default {
       type: String,
       required: true,
     },
+
     doughId: {
       type: Number,
       required: true,
     },
+
     sauceId: {
       type: Number,
       required: true,
     },
+
     sizeId: {
       type: Number,
       required: true,
     },
+
     ingredientsId: {
       type: Array,
       required: true,
     },
+
     quantity: {
       type: Number,
       required: true,
     },
   },
+
   computed: {
     ...mapGetters([
       "normolizedDought",
@@ -82,30 +88,37 @@ export default {
       "normolizedSauces",
       "normolizedSizes",
     ]),
+
     dough() {
       return this.normolizedDought.find((dough) => dough.doughId === this.doughId);
     },
+
     sauce() {
       return this.normolizedSauces.find((sauce) => sauce.sauceId === this.sauceId);
     },
+
     size() {
       return this.normolizedSizes.find((size) => size.sizeId === this.sizeId);
     },
+
     ingredients() {
       return this.normolizedIngredients.map((ingredient) => ({
         ...ingredient,
         quantity: this.ingredientsId.find((id) => id.ingredientId === ingredient.ingredientId).quantity,
       }));
     },
+
     multiplier() {
       return this.size.multiplier;
     },
+
     ingredientsNames() {
       const names = this.ingredients
         .filter((ingredient) => ingredient.quantity)
         .map((ingredient) => ingredient.name);
       return names.join(", ").toLowerCase();
     },
+
     standartPrice() {
       const mainCost = this.dough.price + this.sauce.price;
       const addedCost = this.ingredients.reduce(
@@ -114,17 +127,21 @@ export default {
       );
       return mainCost + addedCost;
     },
+
     finalPrice() {
       return this.standartPrice * this.multiplier;
     },
+
     formattedFinalPrice() {
       return formatCurrency(this.finalPrice);
     },
   },
+
   methods: {
     changeQty(qty) {
       this.$emit("changeQty", qty);
     },
+    
     changePizza() {
       this.$emit("changePizza");
     },

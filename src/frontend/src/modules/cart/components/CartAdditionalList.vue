@@ -26,6 +26,7 @@ export default {
   computed: {
     ...mapState(["misc"]),
   },
+  
   methods: {
     ...mapActions("Cart", ["changeMiscQty"]),
   },

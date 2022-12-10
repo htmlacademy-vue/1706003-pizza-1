@@ -31,9 +31,11 @@ export default {
   computed: {
     ...mapGetters("Orders", ["formattedOrders"]),
   },
+
   created() {
     this.getOrders();
   },
+  
   methods: {
     ...mapActions("Orders", ["getOrders"]),
   },
