@@ -46,30 +46,35 @@ export default {
       type: Number,
       required: true,
     },
+
     name: {
       type: String,
       required: true,
     },
+
     image: {
       type: String,
       required: true,
     },
+
     price: {
       type: Number,
       required: true,
     },
   },
+
   computed: {
     ...mapState("Cart", ["misc"]),
-
     formattedPrice() {
       return formatCurrency(this.price);
     },
+
     quantity() {
       return this.misc.find((product) => product.miscId === this.miscId)
         .quantity;
     },
   },
+  
   methods: {
     changeQty(qty) {
       this.$emit("changeQty", qty);

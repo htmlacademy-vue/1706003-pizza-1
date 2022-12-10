@@ -27,16 +27,19 @@ export default {
       type: Number,
       required: true,
     },
+
     quantity: {
       type: Number,
       required: true,
     },
   },
+
   computed: {
     ...mapState(["misc"]),
     miscItem() {
       return this.misc.find((item) => item.miscId === this.miscId);
     },
+    
     formatedPrice() {
       return formatCurrency(this.miscItem.price);
     },

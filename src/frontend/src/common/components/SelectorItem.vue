@@ -16,7 +16,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .filling {
   @include r-s14-h16;
 

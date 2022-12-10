@@ -20,10 +20,12 @@ export default {
       type: Number,
       required: true,
     },
+
     name: {
       type: String,
       required: true,
     },
+    
     checked: {
       type: Boolean,
       required: true,
@@ -32,7 +34,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .visually-hidden {
   position: absolute;
 

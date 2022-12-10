@@ -22,10 +22,12 @@ export default {
       type: String,
       default: "button",
     },
+
     disabled: {
       type: Boolean,
       default: false,
     },
+    
     modifier: {
       type: Array,
       default: () => ([]),

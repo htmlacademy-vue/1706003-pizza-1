@@ -74,6 +74,7 @@ export default {
           error: "",
           rules: ["required", "email"],
         },
+
         password: {
           error: "",
           rules: ["required"],
@@ -81,21 +82,26 @@ export default {
       },
     };
   },
+
   watch: {
     email() {
       this.$clearValidationErrors();
     },
+
     password() {
       this.$clearValidationErrors();
     },
   },
+
   mounted() {
     this.$refs.email.focus();
   },
+
   methods: {
     closeAuthModal() {
       this.$router.go(-1);
     },
+    
     async login() {
       if (
         !this.$validateFields(

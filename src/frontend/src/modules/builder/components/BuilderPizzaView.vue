@@ -36,11 +36,13 @@ export default {
       sizeId: "sizeId",
       ingredientsQty: "ingredients",
     }),
+
     ...mapGetters([
       "normolizedDought",
       "normolizedSauces",
       "normolizedIngredients",
     ]),
+
     pizzaFoundationClass() {
       const doughClassModifier = {
         light: "small",
@@ -56,12 +58,14 @@ export default {
         sauce.value
       }`;
     },
+
     filteredIngredients() {
       return this.ingredientsQty.filter(
         (ingredient) => ingredient.quantity > 0
       );
     },
   },
+
   methods: {
     ...mapActions("Builder", ["changeIngredientQty"]),
     ingredientClass(id) {
@@ -77,6 +81,7 @@ export default {
       classObj["pizza__filling--third"] = quantity > 2;
       return classObj;
     },
+    
     addIngredient(ingredient) {
       const qty = this.ingredientsQty.find(
         (element) => element.ingredientId === ingredient.ingredientId
@@ -93,7 +98,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .constructor {
   width: 315px;
   margin-top: 25px;
