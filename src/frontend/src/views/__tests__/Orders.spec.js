@@ -4,7 +4,7 @@ import { generateMockStore } from '@/store/mocks';
 import user from '@/static/user';
 import pizza from '@/static/pizza';
 import miscData from '@/static/misc';
-import Orders from '@/views/Orders';
+import Orders from '@/views/Orders/Index.vue';
 import AppTitle from "@/common/components/AppTitle.vue";
 import OrdersItem from "@/modules/orders/components/OrdersItem.vue";
 

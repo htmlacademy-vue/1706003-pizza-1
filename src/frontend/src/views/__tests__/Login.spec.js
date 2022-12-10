@@ -1,6 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import $validator from '@/common/mixins/validator';
-import Login from '@/views/Login';
+import Login from '@/views/Index/^Login.vue';
 import AppButton from '@/common/components/AppButton';
 import AppClose from '@/common/components/AppClose';
 import AppTitle from "@/common/components/AppTitle.vue";

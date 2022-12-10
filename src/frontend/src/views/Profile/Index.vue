@@ -47,6 +47,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { auth } from "@/middlewares";
 
 import ProfileUser from "@/modules/profile/components/ProfileUser.vue";
 import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm.vue";
@@ -57,6 +58,8 @@ import AppTitle from "@/common/components/AppTitle.vue";
 
 export default {
   name: "Profile",
+  layout: "AppLayoutMain",
+  middlewares: auth,
   components: {
     ProfileUser,
     ProfileAddressForm,
